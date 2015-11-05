@@ -13,7 +13,7 @@ class SettingsHandler extends React.Component {
   }
 
   componentDidMount() {
-    let inputFields = document.querySelectorAll('.has-feedback .form-control');
+    let inputFields = document.querySelectorAll('.form-control, .checkbox [type="checkbox"]');
     let gyazoServiceStore = new GyazoServiceStore();
     (async () => {
       await gyazoServiceStore.ready;
@@ -21,7 +21,12 @@ class SettingsHandler extends React.Component {
       [].forEach.call(inputFields, (inputField) => {
         if (typeof gyazoService !== 'undefined') {
           let name = inputField.name;
-          inputField.value = gyazoService[camelcase(name)];
+          let value = gyazoService[camelcase(name)];
+          if (typeof value === 'boolean') {
+            inputField.checked = value;
+          } else {
+            inputField.value = value;
+          }
         }
         this.handleChange({
           target: inputField
@@ -39,6 +44,7 @@ class SettingsHandler extends React.Component {
       await gyazoServiceStore.save({
         uri: form.querySelector('[name="uri"]').value,
         gyazoId: form.querySelector('[name="gyazo-id"]').value,
+        useProxy: form.querySelector('[name="use-proxy"]').checked,
         _id: this.gyazoServiceKey
       });
     })();
@@ -57,7 +63,8 @@ class SettingsHandler extends React.Component {
     let validity = inputField.validity;
     let formGroup = (target => {
       while ((target = (target || {}).parentNode) !== null) {
-        if (target.classList.contains('form-group')) {
+        let classList = target.classList;
+        if (classList && classList.contains('form-group') && classList.contains('has-feedback')) {
           return target;
         }
       }
@@ -92,6 +99,17 @@ class SettingsHandler extends React.Component {
               <div className='col-sm-10'>
                 <input type='text' value={this.state.gyazoId} onChange={this.handleChange.bind(this)} className='form-control' id='gyazo-id' name='gyazo-id'/>
                 <span className='glyphicon form-control-feedback' aria-hidden='true'/>
+              </div>
+            </fieldset>
+            <fieldset className='form-group'>
+              <label className='sr-only'>use Proxy</label>
+              <div className='col-sm-offset-2 col-sm-10'>
+                <div className='checkbox'>
+                  <label>
+                    <input type='checkbox' onChange={this.handleChange.bind(this)} id='gyazo-use-proxy' name='use-proxy'/>
+                    <span>&nbsp;use Proxy</span>
+                  </label>
+                </div>
               </div>
             </fieldset>
             <div className='form-group'>
