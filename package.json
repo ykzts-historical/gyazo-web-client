@@ -1,8 +1,9 @@
 {
   "name": "gyazo-web-client",
   "version": "1.0.0",
+  "description": "Web client for Gyazo.",
   "author": "Yamagishi Kazutoshi <ykzts@desire.sh>",
-  "license": "MIT License",
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "https://github.com/ykzts/gyazo-web-client.git"
