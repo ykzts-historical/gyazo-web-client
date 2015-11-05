@@ -1,6 +1,7 @@
 import RootHandler from '../src/handlers/RootHandler';
 import AboutHandler from '../src/handlers/AboutHandler';
 import ImagesHandler from '../src/handlers/ImagesHandler';
+import SettingsHandler from '../src/handlers/SettingsHandler';
 
 export default {
   root: {
@@ -20,5 +21,11 @@ export default {
     method: 'get',
     handler: ImagesHandler,
     label: 'Images'
+  },
+  settings: {
+    path: '/settings',
+    method: 'get',
+    handler: SettingsHandler,
+    label: 'Settings'
   }
 };
