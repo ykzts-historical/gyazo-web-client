@@ -1,9 +1,10 @@
+import { env } from 'process';
 import gulp from 'gulp';
 import browserify from 'browserify';
 import babelify from 'babelify';
 import source from 'vinyl-source-stream';
 
-const DEBUG = false;
+const DEBUG = env.NODE_ENV !== 'production';
 
 gulp.task('build', ['build:script']);
 
