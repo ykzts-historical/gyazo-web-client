@@ -1,3 +1,4 @@
+import 'babel-polyfill';
 import ReactDOM from 'react-dom';
 import { createElementWithContext } from 'fluxible-addons-react';
 import application from './application';
