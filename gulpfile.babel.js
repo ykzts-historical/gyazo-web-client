@@ -5,7 +5,9 @@ import source from 'vinyl-source-stream';
 
 const DEBUG = false;
 
-gulp.task('build', function() {
+gulp.task('build', ['build:script']);
+
+gulp.task('build:script', function() {
   let src = browserify({
     entries: ["./src/client.js"],
     debug: DEBUG
@@ -13,4 +15,8 @@ gulp.task('build', function() {
   return src
     .pipe(source('bundle.js'))
     .pipe(gulp.dest(`${__dirname}/public`));
+});
+
+gulp.task('watch', ['build'], function() {
+  gulp.watch('./src/**/*.js', ['build:script']);
 });

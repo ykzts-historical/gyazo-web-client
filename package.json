@@ -11,8 +11,9 @@
     "url": "https://github.com/ykzts/gyazo-web-client/issues"
   },
   "scripts": {
-    "build": "gulp build",
-    "server": "babel-node ./bin/gyazo-web-client.js"
+    "start": "nodemon --exec babel-node ./bin/gyazo-web-client.js",
+    "watch": "gulp watch",
+    "build": "gulp build"
   },
   "dependencies": {
     "babel-core": "^6.0.20",
@@ -30,5 +31,8 @@
     "fluxible-addons-react": "^0.2.0",
     "fluxible-router": "^0.3.1",
     "serialize-javascript": "^1.1.2"
+  },
+  "devDependencies": {
+    "nodemon": "^1.8.1"
   }
 }
