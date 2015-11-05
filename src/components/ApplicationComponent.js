@@ -8,7 +8,7 @@ class ApplicationComponent extends React.Component {
     let Handler = this.props.currentRoute.get('handler');
 
     return (
-      <div className="container">
+      <div id='application-component'>
         <NavigationComponent/>
         <Handler/>
       </div>

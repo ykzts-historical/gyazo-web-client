@@ -3,7 +3,7 @@ import React from 'react';
 class ImagesHandler extends React.Component {
   render() {
     return (
-      <div>
+      <div className='container'>
         <p>images page</p>
       </div>
     );

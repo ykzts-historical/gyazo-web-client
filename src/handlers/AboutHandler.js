@@ -3,7 +3,7 @@ import React from 'react';
 class AboutHandler extends React.Component {
   render() {
     return (
-      <div>
+      <div className='container'>
         <p>about page</p>
       </div>
     );

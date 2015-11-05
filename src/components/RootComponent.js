@@ -6,6 +6,7 @@ class RootComponent extends React.Component {
       <html>
         <head>
           <meta charSet='UTF-8'/>
+          <meta name='viewport' content='initial-scale=1.0,user-scalable=no,maximum-scale=1,width=device-width'/>
           <link rel='stylesheet' href='//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css'/>
 
           <script src='//ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js'/>
