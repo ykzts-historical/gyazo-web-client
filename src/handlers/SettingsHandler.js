@@ -28,7 +28,6 @@ class SettingsHandler extends React.Component {
   }
 
   render() {
-    console.log(this.state.gyazoServices);
     return (
       <div id='SettingsHandler'>
         {this.state.gyazoServices.map((gyazoService) => (
