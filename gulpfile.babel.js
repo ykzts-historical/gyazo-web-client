@@ -19,5 +19,6 @@ gulp.task('build:script', function() {
 });
 
 gulp.task('watch', ['build'], function() {
-  gulp.watch(['./src/**/*.js', './config/routes.js'], ['build:script']);
+  gulp.watch('./config/routes.js', ['build:script']);
+  gulp.watch('./src/**/*.js', ['build:script']);
 });
