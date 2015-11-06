@@ -14,7 +14,7 @@ class RegisterGyazoServiceFormComponent extends React.Component {
   componentDidMount() {
     let inputFields = document.querySelectorAll('.form-control, .checkbox [type="checkbox"]');
     let gyazoServiceStore = new GyazoServiceStore();
-    let _id = this.props.primaryKey;
+    let _id = this.props._id;
     (async () => {
       await gyazoServiceStore.ready;
       let gyazoService = await gyazoServiceStore.find(_id);
@@ -45,7 +45,7 @@ class RegisterGyazoServiceFormComponent extends React.Component {
         uri: form.querySelector('[name="uri"]').value,
         gyazoId: form.querySelector('[name="gyazo-id"]').value,
         useProxy: form.querySelector('[name="use-proxy"]').checked,
-        _id: this.props.primaryKey
+        _id: this.props._id
       });
     })();
     return false;
