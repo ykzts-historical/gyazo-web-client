@@ -3,7 +3,7 @@ import React from 'react';
 class RootHandler extends React.Component {
   render() {
     return (
-      <div className='container'>
+      <div id='RootHandler'>
         <p>root page</p>
       </div>
     );

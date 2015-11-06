@@ -84,7 +84,7 @@ class SettingsHandler extends React.Component {
 
   render() {
     return (
-      <div className='container'>
+      <div id='SettingsHandler'>
         <form className='form-horizontal' onSubmit={this.handleSubmit.bind(this)}>
           <fieldset>
             <fieldset className='form-group has-feedback'>
