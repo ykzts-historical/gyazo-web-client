@@ -38,7 +38,8 @@
     "serialize-javascript": "^1.1.2",
     "stone-skin": "^0.5.2",
     "uuid": "^2.0.1",
-    "vinyl-source-stream": "^1.1.0"
+    "vinyl-source-stream": "^1.1.0",
+    "whatwg-fetch": "^0.10.1"
   },
   "devDependencies": {
     "babel-cli": "^6.1.2",

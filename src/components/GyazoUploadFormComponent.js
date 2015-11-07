@@ -30,7 +30,29 @@ class GyazoUploadFormComponent extends React.Component {
 
   handleSubmit(event) {
     event.preventDefault();
-    // todo...
+    let _id = this.refs.gyazoServiceId.value;
+    let image = (this.refs.gyazoImageData.files || [])[0];
+    (async (gyazoServiceStore) => {
+      await gyazoServiceStore.ready;
+      let gyazoService = await gyazoServiceStore.find(_id);
+      let uri = gyazoService.uri;
+      let formData = new FormData();
+      formData.append('id', gyazoService.gyazoId);
+      formData.append('imagedata', image);
+      let response = await fetch(uri, {
+        method: 'post',
+        body: formData,
+        credentials: 'cors'
+      });
+      let headers = response.headers;
+      let imageUri = await response.text();
+      let newGyazoId = headers.get('x-gyazo-id');
+      if (newGyazoId) {
+        gyazoService.gyazoId = newGyazoId;
+        await gyazoServiceStore.save(gyazoService);
+      }
+      console.log(imageUri);
+    })(new GyazoServiceStore());
     return false;
   }
 
@@ -42,13 +64,13 @@ class GyazoUploadFormComponent extends React.Component {
             <div className='form-group'>
               <label htmlFor='gyazo-image' required={true} className='col-sm-2 control-label'>Image</label>
               <div className='col-sm-10'>
-                <input type='file' id='gyazo-image' name='imagedata'/>
+                <input id='gyazo-image' name='imagedata' ref='gyazoImageData' type='file'/>
               </div>
             </div>
             <div className='form-group'>
               <label htmlFor='gyazo-service' className='col-sm-2 control-label'>Gyazo Service</label>
               <div className='col-sm-10'>
-                <select className='form-control' id='gyazo-service' name='gyazo-service'>
+                <select className='form-control' id='gyazo-service' name='gyazo-service' ref='gyazoServiceId'>
                   {this.state.gyazoServices.map((gyazoService) => (
                     <option value={gyazoService._id} label={gyazoService.name || gyazoService.uri} key={gyazoService._id}/>
                   ))}
