@@ -14,7 +14,8 @@
   "scripts": {
     "start": "nodemon --exec babel-node ./bin/gyazo-web-client.js",
     "watch": "gulp watch",
-    "build": "gulp build"
+    "build": "gulp build",
+    "lint": "eslint ./src/**/*.js ./config/routes.js ./bin/gyazo-web-client.js"
   },
   "dependencies": {
     "babel-core": "^6.1.2",
@@ -41,6 +42,8 @@
   },
   "devDependencies": {
     "babel-cli": "^6.1.2",
+    "babel-eslint": "^4.1.4",
+    "eslint": "^1.9.0",
     "nodemon": "^1.8.1"
   }
 }
