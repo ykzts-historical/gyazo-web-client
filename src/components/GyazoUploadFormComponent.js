@@ -2,11 +2,14 @@ import uuid from 'uuid';
 import React from 'react';
 import GyazoServiceStore from '../stores/GyazoServiceStore';
 
+const EXTERNAL_URI_PATTERN = /^https?:\/\//;
+
 class GyazoUploadFormComponent extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      gyazoServices: []
+      gyazoServices: [],
+      imageUri: null
     };
   }
 
@@ -14,17 +17,16 @@ class GyazoUploadFormComponent extends React.Component {
     let gyazoServiceStore = new GyazoServiceStore();
     (async () => {
       await gyazoServiceStore.ready;
-      let gyazoServices = await gyazoServiceStore.all();
-      if (gyazoServices.length < 1) {
-        let gyazoService = await gyazoServiceStore.save({
+      let gyazoService = await gyazoServiceStore.first((gyazoService) => typeof gyazoService._id !== 'undefined');
+      if (typeof gyazoService === 'undefined') {
+        gyazoService = await gyazoServiceStore.save({
           _id: uuid.v4(),
           uri: 'https://gyazo.com/upload.cgi',
           gyazoId: '',
           useProxy: true
         });
-        gyazoServices = [ gyazoService ];
       }
-      this.setState({ gyazoServices });
+      this.setState({ gyazoService });
     })();
   }
 
@@ -32,7 +34,9 @@ class GyazoUploadFormComponent extends React.Component {
     event.preventDefault();
     let _id = this.refs.gyazoServiceId.value;
     let image = (this.refs.gyazoImageData.files || [])[0];
-    (async (gyazoServiceStore) => {
+    let method = event.target.method;
+    let gyazoServiceStore = new GyazoServiceStore();
+    (async () => {
       await gyazoServiceStore.ready;
       let gyazoService = await gyazoServiceStore.find(_id);
       let uri = gyazoService.uri;
@@ -40,7 +44,7 @@ class GyazoUploadFormComponent extends React.Component {
       formData.append('id', gyazoService.gyazoId);
       formData.append('imagedata', image);
       let response = await fetch(uri, {
-        method: 'post',
+        method: method,
         body: formData,
         credentials: 'cors'
       });
@@ -51,37 +55,46 @@ class GyazoUploadFormComponent extends React.Component {
         gyazoService.gyazoId = newGyazoId;
         await gyazoServiceStore.save(gyazoService);
       }
-      console.log(imageUri);
-    })(new GyazoServiceStore());
+      this.setState({ imageUri });
+    })();
+    return false;
+  }
+
+  handleChange(event) {
+    event.preventDefault();
+    let { target: { files: [file, ..._] } } = event;
+    if (typeof file === 'undefined') {
+      return false;
+    }
+    let imageUri = URL.createObjectURL(file);
+    this.setState({ imageUri });
     return false;
   }
 
   render() {
     return (
       <div className='GyazoUploadFormComponent'>
-        <form method='post' className='form-horizontal' onSubmit={this.handleSubmit.bind(this)}>
-          <fieldset>
-            <div className='form-group'>
-              <label htmlFor='gyazo-image' required={true} className='col-sm-2 control-label'>Image</label>
-              <div className='col-sm-10'>
-                <input id='gyazo-image' name='imagedata' ref='gyazoImageData' type='file'/>
-              </div>
-            </div>
-            <div className='form-group'>
-              <label htmlFor='gyazo-service' className='col-sm-2 control-label'>Gyazo Service</label>
-              <div className='col-sm-10'>
-                <select className='form-control' id='gyazo-service' name='gyazo-service' ref='gyazoServiceId'>
-                  {this.state.gyazoServices.map((gyazoService) => (
-                    <option value={gyazoService._id} label={gyazoService.name || gyazoService.uri} key={gyazoService._id}/>
-                  ))}
-                </select>
-              </div>
-            </div>
-            <div className='form-group'>
-              <div className='col-sm-offset-2 col-sm-10'>
+        <form className='form-horizontal' method='post' onSubmit={this.handleSubmit.bind(this)}>
+          <fieldset className='thumbnail'>
+            <label htmlFor='gyazo-image'>
+              <input className='sr-only' id='gyazo-image' name='imagedata' onChange={this.handleChange.bind(this)} ref='gyazoImageData' required={true} type='file'/>
+              <img className='img-responsive' data-src='holder.js/512x512?auto=yes' ref='image' src={this.state.imageUri || null}/>
+            </label>
+            <div className='caption'>
+              {(() => EXTERNAL_URI_PATTERN.test(this.state.imageUri || '') && (
+                <p>
+                  <a href={this.state.imageUri} style={{wordBreak: 'break-all', wordWrap: 'break-word'}}>
+                    {this.state.imageUri}
+                  </a>
+                </p>
+              ))()}
+              <p>
                 <button type='submit' className='btn btn-primary'>Upload</button>
-              </div>
+              </p>
             </div>
+            {((gyazoService) => gyazoService && (
+              <input ref='gyazoServiceId' type='hidden' value={gyazoService._id}/>
+            ))(this.state.gyazoService)}
           </fieldset>
         </form>
       </div>
