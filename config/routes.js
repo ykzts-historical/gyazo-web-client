@@ -1,4 +1,4 @@
-import RootHandler from '../src/handlers/RootHandler';
+import UploaderHandler from '../src/handlers/UploaderHandler';
 import AboutHandler from '../src/handlers/AboutHandler';
 import ImagesHandler from '../src/handlers/ImagesHandler';
 import SettingsHandler from '../src/handlers/SettingsHandler';
@@ -8,7 +8,7 @@ export default {
   root: {
     path: '/',
     method: 'get',
-    handler: RootHandler,
+    handler: UploaderHandler,
     label: 'Root',
     action: (context, payload) => Promise.all([
       context.executeAction(ApplicationAction, payload)
