@@ -1,9 +1,12 @@
 import { env } from 'process';
 import gulp from 'gulp';
 import eslint from 'gulp-eslint';
+import uglify from 'gulp-uglify';
+import rev from 'gulp-rev';
 import browserify from 'browserify';
 import babelify from 'babelify';
 import source from 'vinyl-source-stream';
+import buffer from 'vinyl-buffer';
 
 const DEBUG = env.NODE_ENV !== 'production';
 
@@ -14,9 +17,23 @@ gulp.task('build:client', ['lint'], function() {
     entries: ["./src/client.js"],
     debug: DEBUG
   }).transform(babelify).bundle();
-  return src
+  src = src
     .pipe(source('bundle.js'))
-    .pipe(gulp.dest(`${__dirname}/public`));
+    .pipe(buffer());
+  if (!DEBUG) {
+    src = src
+      .pipe(uglify())
+      .pipe(rev());
+  }
+  src = src.pipe(gulp.dest(`${__dirname}/public`));
+  if (!DEBUG) {
+    let manifest = src
+      .pipe(rev.manifest('manifest.json', {
+        merge: true
+      }))
+      .pipe(gulp.dest(`${__dirname}/public`));
+  }
+  return src;
 });
 
 gulp.task('lint', function() {

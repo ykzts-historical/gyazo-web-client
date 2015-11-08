@@ -30,6 +30,8 @@
     "fluxible-router": "^0.3.1",
     "gulp": "^3.9.0",
     "gulp-eslint": "^1.0.0",
+    "gulp-rev": "^6.0.1",
+    "gulp-uglify": "^1.4.2",
     "holderjs": "^2.9.0",
     "koa": "^2.0.0-alpha.3",
     "koa-convert": "^1.0.0",
@@ -39,6 +41,7 @@
     "serialize-javascript": "^1.1.2",
     "stone-skin": "^0.5.2",
     "uuid": "^2.0.1",
+    "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "^1.1.0",
     "whatwg-fetch": "^0.10.1"
   },
