@@ -27,6 +27,6 @@ gulp.task('lint', function() {
 });
 
 gulp.task('watch', ['build'], function() {
-  gulp.watch('./config/routes.js', ['build:script']);
-  gulp.watch('./src/**/*.js', ['build:script']);
+  gulp.watch('./config/routes.js', ['build:client']);
+  gulp.watch('./src/**/*.js', ['build:client']);
 });
