@@ -5,56 +5,44 @@ import GyazoServiceStore from '../stores/GyazoServiceStore';
 const EXTERNAL_URI_PATTERN = /^https?:\/\//;
 
 class GyazoUploadFormComponent extends React.Component {
+  static propTypes = {
+    id: React.PropTypes.string,
+    uri: React.PropTypes.string.isRequired,
+    gyazoId: React.PropTypes.string.isRequired,
+    useProxy: React.PropTypes.bool.isRequired
+  }
+
+  static defaultProps = {
+    uri: 'https://gyazo.com/upload.cgi',
+    gyazoId: '',
+    useProxy: true
+  }
+
   constructor(props) {
     super(props);
+
     this.state = {
-      gyazoServices: [],
       imageUri: null
     };
   }
 
-  componentDidMount() {
-    let gyazoServiceStore = new GyazoServiceStore();
-    (async () => {
-      await gyazoServiceStore.ready;
-      let gyazoService = await gyazoServiceStore.first((gyazoService) => typeof gyazoService._id !== 'undefined');
-      if (typeof gyazoService === 'undefined') {
-        gyazoService = await gyazoServiceStore.save({
-          _id: uuid.v4(),
-          uri: 'https://gyazo.com/upload.cgi',
-          gyazoId: '',
-          useProxy: true
-        });
-      }
-      this.setState({ gyazoService });
-    })();
-  }
-
   handleSubmit(event) {
     event.preventDefault();
-    let _id = this.refs.gyazoServiceId.value;
     let image = (this.refs.gyazoImageData.files || [])[0];
-    let method = event.target.method;
-    let gyazoServiceStore = new GyazoServiceStore();
+    if (!image) {
+      return false;
+    }
     (async () => {
-      await gyazoServiceStore.ready;
-      let gyazoService = await gyazoServiceStore.find(_id);
-      let uri = gyazoService.uri;
       let formData = new FormData();
-      formData.append('id', gyazoService.gyazoId);
+      formData.append('id', this.props.gyazoId);
       formData.append('imagedata', image);
-      let response = await fetch(uri, {
-        method: method,
+      let response = await fetch(this.props.uri, {
+        method: event.target.method,
         body: formData,
         credentials: 'cors'
       });
       let headers = response.headers;
       let imageUri = await response.text();
-      let newGyazoId = headers.get('x-gyazo-id');
-      if (newGyazoId) {
-        gyazoService.gyazoId = newGyazoId;
-        await gyazoServiceStore.save(gyazoService);
-      }
       this.setState({ imageUri });
     })();
     return false;
@@ -76,31 +64,26 @@ class GyazoUploadFormComponent extends React.Component {
       <div className='GyazoUploadFormComponent'>
         <form className='form-horizontal' method='post' onSubmit={this.handleSubmit.bind(this)}>
           <fieldset className='card'>
-            <label htmlFor='gyazo-image'>
-              <input className='sr-only' id='gyazo-image' name='imagedata' onChange={this.handleChange.bind(this)} ref='gyazoImageData' required={true} type='file'/>
-              <img className='card-img-top img-responsive' data-src='holder.js/512x512?auto=yes' ref='image' src={this.state.imageUri || null}/>
-            </label>
-            {((imageUri) => {
-              if (!imageUri) {
-                return;
-              }
-              if (EXTERNAL_URI_PATTERN.test(imageUri)) {
-                return (
-                  <footer className='card-footer'>
-                    <a href={this.state.imageUri} style={{wordBreak: 'break-all', wordWrap: 'break-word'}}>{this.state.imageUri}</a>
-                  </footer>
-                );
-              } else {
-                return (
-                  <div className='card-block'>
+            <img className='card-img-top img-responsive' ref='image' src={this.state.imageUri || ''} style={{display: this.state.imageUri ? 'inline-block' : 'none'}}/>
+            <div className='card-block'>
+              <label className='file' htmlFor='gyazo-image' style={{display: this.state.imageUri ? 'none' : 'inline-block', maxWidth: '100%'}}>
+                <input className='file' id='gyazo-image' name='imagedata' onChange={this.handleChange.bind(this)} ref='gyazoImageData' required={true} type='file'/>
+                <span className='file-custom'/>
+              </label>
+              {((imageUri) => {
+                if (!imageUri) {
+                  return;
+                } else if (EXTERNAL_URI_PATTERN.test(imageUri)) {
+                  return (
+                    <a href={imageUri} style={{wordBreak: 'break-all', wordWrap: 'break-word'}}>{imageUri}</a>
+                  );
+                } else {
+                  return (
                     <button type='submit' className='btn btn-primary'>Upload</button>
-                  </div>
-                )
-              }
-            })(this.state.imageUri)}
-            {((gyazoService) => gyazoService && (
-              <input ref='gyazoServiceId' type='hidden' value={gyazoService._id}/>
-            ))(this.state.gyazoService)}
+                  );
+                }
+              })(this.state.imageUri)}
+            </div>
           </fieldset>
         </form>
       </div>
