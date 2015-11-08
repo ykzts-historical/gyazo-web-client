@@ -15,7 +15,7 @@
     "start": "nodemon --exec babel-node ./bin/gyazo-web-client.js",
     "watch": "gulp watch",
     "build": "gulp build",
-    "lint": "eslint ./src/**/*.js ./config/routes.js ./bin/gyazo-web-client.js"
+    "lint": "gulp lint"
   },
   "dependencies": {
     "babel-core": "^6.1.2",
@@ -30,6 +30,7 @@
     "fluxible-addons-react": "^0.2.0",
     "fluxible-router": "^0.3.1",
     "gulp": "^3.9.0",
+    "gulp-eslint": "^1.0.0",
     "holderjs": "^2.9.0",
     "koa": "^2.0.0-alpha.3",
     "koa-convert": "^1.0.0",
