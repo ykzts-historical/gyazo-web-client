@@ -8,7 +8,7 @@ class RegisterGyazoServiceFormComponent extends React.Component {
     super(props);
     this.state = {
       uri: 'https://gyazo.com/upload.cgi',
-      gyazoId: null,
+      gyazoId: '',
       useProxy: false
     };
   }
@@ -19,6 +19,9 @@ class RegisterGyazoServiceFormComponent extends React.Component {
     (async () => {
       await gyazoServiceStore.ready;
       let gyazoService = await gyazoServiceStore.find(_id);
+      if (!gyazoService) {
+        return;
+      }
       this.setState(gyazoService);
     })();
   }
@@ -48,11 +51,11 @@ class RegisterGyazoServiceFormComponent extends React.Component {
   render() {
     return (
       <div className='RegisterGyazoServiceFormComponent'>
-        <form className='form-horizontal' onSubmit={this.handleSubmit.bind(this)}>
+        <form onSubmit={this.handleSubmit.bind(this)}>
           <fieldset>
-            <FormGroupHasFeedbackComponent id='gyazo-uri' label='Gyazo URI' name='uri' placeholder='https://' ref='uri' type='url' value={this.state.uri}/>
+            <FormGroupHasFeedbackComponent id='gyazo-uri' label='Gyazo URI' name='uri' placeholder='https://' ref='uri' required={true} type='url' value={this.state.uri}/>
             <FormGroupHasFeedbackComponent id='gyazo-id' label='Gyazo ID' name='gyazo-id' ref='gyazoId' type='text' value={this.state.gyazoId}/>
-            <fieldset className='form-group'>
+            <fieldset className='form-group row'>
               <label className='sr-only'>use Proxy</label>
               <div className='col-sm-offset-2 col-sm-10'>
                 <div className='checkbox'>
@@ -63,9 +66,9 @@ class RegisterGyazoServiceFormComponent extends React.Component {
                 </div>
               </div>
             </fieldset>
-            <div className='form-group'>
+            <div className='form-group row'>
               <div className='col-sm-offset-2 col-sm-10'>
-                <button type='submit' className='btn btn-default'>Save</button>
+                <button type='submit' className='btn btn-primary'>Save</button>
               </div>
             </div>
           </fieldset>

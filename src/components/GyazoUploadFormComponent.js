@@ -75,23 +75,29 @@ class GyazoUploadFormComponent extends React.Component {
     return (
       <div className='GyazoUploadFormComponent'>
         <form className='form-horizontal' method='post' onSubmit={this.handleSubmit.bind(this)}>
-          <fieldset className='thumbnail'>
+          <fieldset className='card'>
             <label htmlFor='gyazo-image'>
               <input className='sr-only' id='gyazo-image' name='imagedata' onChange={this.handleChange.bind(this)} ref='gyazoImageData' required={true} type='file'/>
-              <img className='img-responsive' data-src='holder.js/512x512?auto=yes' ref='image' src={this.state.imageUri || null}/>
+              <img className='card-img-top img-responsive' data-src='holder.js/512x512?auto=yes' ref='image' src={this.state.imageUri || null}/>
             </label>
-            <div className='caption'>
-              {(() => EXTERNAL_URI_PATTERN.test(this.state.imageUri || '') && (
-                <p>
-                  <a href={this.state.imageUri} style={{wordBreak: 'break-all', wordWrap: 'break-word'}}>
-                    {this.state.imageUri}
-                  </a>
-                </p>
-              ))()}
-              <p>
-                <button type='submit' className='btn btn-primary'>Upload</button>
-              </p>
-            </div>
+            {((imageUri) => {
+              if (!imageUri) {
+                return;
+              }
+              if (EXTERNAL_URI_PATTERN.test(imageUri)) {
+                return (
+                  <footer className='card-footer'>
+                    <a href={this.state.imageUri} style={{wordBreak: 'break-all', wordWrap: 'break-word'}}>{this.state.imageUri}</a>
+                  </footer>
+                );
+              } else {
+                return (
+                  <div className='card-block'>
+                    <button type='submit' className='btn btn-primary'>Upload</button>
+                  </div>
+                )
+              }
+            })(this.state.imageUri)}
             {((gyazoService) => gyazoService && (
               <input ref='gyazoServiceId' type='hidden' value={gyazoService._id}/>
             ))(this.state.gyazoService)}
