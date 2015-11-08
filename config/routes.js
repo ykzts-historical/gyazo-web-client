@@ -31,7 +31,6 @@ export default {
     action: (context, payload) => Promise.all([
       context.executeAction(ApplicationAction, payload)
     ])
-
   },
   settings: {
     path: '/settings',
