@@ -1,7 +1,7 @@
 import React from 'react';
 import camelcase from 'camelcase';
 import FormGroupHasFeedbackComponent from './FormGroupHasFeedbackComponent';
-import GyazoServiceStore from '../stores/GyazoServiceStore';
+import GyazoService from '../models/GyazoService';
 
 class RegisterGyazoServiceFormComponent extends React.Component {
   constructor(props) {
@@ -15,10 +15,10 @@ class RegisterGyazoServiceFormComponent extends React.Component {
 
   componentDidMount() {
     let _id = this.props._id;
-    let gyazoServiceStore = new GyazoServiceStore;
+    let model = new GyazoService();
     (async () => {
-      await gyazoServiceStore.ready;
-      let gyazoService = await gyazoServiceStore.find(_id);
+      await model.ready;
+      let gyazoService = await model.find(_id);
       if (!gyazoService) {
         return;
       }
@@ -29,10 +29,10 @@ class RegisterGyazoServiceFormComponent extends React.Component {
   handleSubmit(event) {
     event.preventDefault();
     let form = event.target;
-    let gyazoServiceStore = new GyazoServiceStore();
+    let model = new GyazoService();
     (async () => {
-      await gyazoServiceStore.ready;
-      let gyazoService = await gyazoServiceStore.save({
+      await model.ready;
+      let gyazoService = await model.save({
         uri: this.refs.uri.getCurrentValue(),
         gyazoId: this.refs.gyazoId.getCurrentValue(),
         useProxy: this.refs.useProxy.checked,

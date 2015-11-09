@@ -1,7 +1,7 @@
 import uuid from 'uuid';
 import React from 'react';
 import GyazoUploadFormComponent from '../components/GyazoUploadFormComponent';
-import GyazoServiceStore from '../stores/GyazoServiceStore';
+import GyazoService from '../models/GyazoService';
 
 class UploaderHandler extends React.Component {
   constructor(props) {
@@ -13,12 +13,12 @@ class UploaderHandler extends React.Component {
   }
 
   componentDidMount() {
-    let gyazoServiceStore = new GyazoServiceStore();
+    let model = new GyazoService();
     (async () => {
-      await gyazoServiceStore.ready;
-      let gyazoServices = await gyazoServiceStore.all();
+      await model.ready;
+      let gyazoServices = await model.all();
       if (gyazoServices.length < 1) {
-        gyazoServices = [await gyazoServiceStore.save({
+        gyazoServices = [await model.save({
           _id: uuid.v4(),
           uri: 'https://gyazo.com/upload.cgi',
           gyazoId: '',
