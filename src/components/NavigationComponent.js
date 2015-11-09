@@ -9,7 +9,9 @@ class NavigationComponent extends React.Component {
           <NavLink className='navbar-brand' routeName='uploader'>Gy</NavLink>
           <ul className='nav navbar-nav pull-right'>
             <li className='nav-item'>
-              <NavLink activeClass='active' className='nav-link' routeName='settings'>Settings</NavLink>
+              <NavLink activeClass='active' className='nav-link' routeName='settings'>
+                <i className='fa fa-cog fa-lg'/>
+              </NavLink>
             </li>
           </ul>
         </nav>
