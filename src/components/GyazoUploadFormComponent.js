@@ -81,7 +81,12 @@ class GyazoUploadFormComponent extends React.Component {
                   );
                 } else {
                   return (
-                    <button className='btn btn-primary' disabled={this.state.readyState !== 'unsent'} type='submit'>{this.state.readyState === 'unsent' ? 'Upload' : 'Uploading...'}</button>
+                    <button className='btn btn-primary' disabled={this.state.readyState !== 'unsent'} type='submit'>
+                      {((readyState) => readyState !== 'unsent' && (
+                        <i className='fa fa-spin fa-spinner'/>
+                      ))(this.state.readyState)}
+                      <span className='label'>{this.state.readyState === 'unsent' ? 'Upload' : 'Uploading...'}</span>
+                    </button>
                   );
                 }
               })(this.state.imageUri)}
