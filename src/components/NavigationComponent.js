@@ -5,7 +5,7 @@ class NavigationComponent extends React.Component {
   render() {
     return (
       <div id='NavigationComponent'>
-        <nav className='bg-faded navbar navbar-light'>
+        <nav className='bg-faded navbar navbar-fixed-top navbar-light'>
           <NavLink className='navbar-brand' routeName='uploader'>Gy</NavLink>
           <ul className='nav navbar-nav pull-right'>
             <li className='nav-item'>

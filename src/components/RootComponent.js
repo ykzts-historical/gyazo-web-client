@@ -11,7 +11,7 @@ class RootComponent extends React.Component {
           <link rel='stylesheet' href='//maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css'/>
           <title>gyazo-web-client</title>
         </head>
-        <body>
+        <body style={{paddingTop: '70px'}}>
           <div id='app' dangerouslySetInnerHTML={{__html: this.props.markup}}/>
           <script dangerouslySetInnerHTML={{__html: this.props.state}}/>
           <script src='/bundle.js'/>
