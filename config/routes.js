@@ -1,33 +1,13 @@
 import UploaderHandler from '../src/handlers/UploaderHandler';
-import AboutHandler from '../src/handlers/AboutHandler';
-import ImagesHandler from '../src/handlers/ImagesHandler';
 import SettingsHandler from '../src/handlers/SettingsHandler';
 import ApplicationAction from '../src/actions/ApplicationAction';
 
 export default {
-  root: {
+  uploader: {
     path: '/',
     method: 'get',
     handler: UploaderHandler,
-    label: 'Root',
-    action: (context, payload) => Promise.all([
-      context.executeAction(ApplicationAction, payload)
-    ])
-  },
-  about: {
-    path: '/about',
-    method: 'get',
-    handler: AboutHandler,
-    label: 'About',
-    action: (context, payload) => Promise.all([
-      context.executeAction(ApplicationAction, payload)
-    ])
-  },
-  images: {
-    path: '/images',
-    method: 'get',
-    handler: ImagesHandler,
-    label: 'Images',
+    label: 'Uploader',
     action: (context, payload) => Promise.all([
       context.executeAction(ApplicationAction, payload)
     ])
