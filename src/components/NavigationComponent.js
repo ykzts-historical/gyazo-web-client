@@ -6,14 +6,8 @@ class NavigationComponent extends React.Component {
     return (
       <div id='NavigationComponent'>
         <nav className='bg-faded navbar navbar-light'>
-          <NavLink className='navbar-brand' routeName='root'>Gy</NavLink>
-          <ul className='nav navbar-nav'>
-            <li className='nav-item'>
-              <NavLink activeClass='active' className='nav-link' routeName='about'>About</NavLink>
-            </li>
-            <li className='nav-item'>
-              <NavLink activeClass='active' className='nav-link' routeName='images'>Images</NavLink>
-            </li>
+          <NavLink className='navbar-brand' routeName='uploader'>Gy</NavLink>
+          <ul className='nav navbar-nav pull-right'>
             <li className='nav-item'>
               <NavLink activeClass='active' className='nav-link' routeName='settings'>Settings</NavLink>
             </li>
