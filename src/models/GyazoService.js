@@ -2,7 +2,7 @@ import StoneSkin from 'stone-skin/with-tv4';
 
 const Base = StoneSkin[typeof window !== 'undefined' ? 'IndexedDb' : 'MemoryDb'];
 
-class GyazoServiceStore extends Base {
+class GyazoService extends Base {
   storeName: 'GyazoService';
 
   schema: {
@@ -23,4 +23,4 @@ class GyazoServiceStore extends Base {
   }
 }
 
-export default GyazoServiceStore;
+export default GyazoService;

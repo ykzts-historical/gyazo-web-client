@@ -1,7 +1,7 @@
 import uuid from 'uuid';
 import React from 'react';
 import RegisterGyazoServiceFormComponent from '../components/RegisterGyazoServiceFormComponent';
-import GyazoServiceStore from '../stores/GyazoServiceStore';
+import GyazoService from '../models/GyazoService';
 
 class SettingsHandler extends React.Component {
   constructor(props) {
@@ -12,10 +12,10 @@ class SettingsHandler extends React.Component {
   }
 
   componentDidMount() {
-    let gyazoServiceStore = new GyazoServiceStore();
+    let model = new GyazoService();
     (async () => {
-      await gyazoServiceStore.ready;
-      let gyazoServices = await gyazoServiceStore.all();
+      await model.ready;
+      let gyazoServices = await model.all();
       if (gyazoServices.length < 1) {
         gyazoServices = [{
           _id: uuid.v4()

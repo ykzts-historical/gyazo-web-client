@@ -1,6 +1,5 @@
 import uuid from 'uuid';
 import React from 'react';
-import GyazoServiceStore from '../stores/GyazoServiceStore';
 
 const EXTERNAL_URI_PATTERN = /^https?:\/\//;
 
