@@ -22,6 +22,7 @@ class GyazoUploadFormComponent extends React.Component {
     super(props);
 
     this.state = {
+      readyState: 'unsent',
       imageUri: null
     };
   }
@@ -32,18 +33,19 @@ class GyazoUploadFormComponent extends React.Component {
     if (!image) {
       return false;
     }
+    let formData = new FormData();
+    formData.append('id', this.props.gyazoId);
+    formData.append('imagedata', image);
+    let request = new Request(this.props.uri, {
+      method: event.target.method,
+      body: formData
+    });
     (async () => {
-      let formData = new FormData();
-      formData.append('id', this.props.gyazoId);
-      formData.append('imagedata', image);
-      let response = await fetch(this.props.uri, {
-        method: event.target.method,
-        body: formData,
-        credentials: 'cors'
-      });
-      let headers = response.headers;
+      this.setState({ readyState: 'opened' });
+      let response = await fetch(request);
+      this.setState({ readyState: 'loading' });
       let imageUri = await response.text();
-      this.setState({ imageUri });
+      this.setState({ readyState: 'done', imageUri });
     })();
     return false;
   }
@@ -79,7 +81,12 @@ class GyazoUploadFormComponent extends React.Component {
                   );
                 } else {
                   return (
-                    <button type='submit' className='btn btn-primary'>Upload</button>
+                    <button className='btn btn-primary' disabled={this.state.readyState !== 'unsent'} type='submit'>
+                      {((readyState) => readyState !== 'unsent' && (
+                        <i className='fa fa-spin fa-spinner'/>
+                      ))(this.state.readyState)}
+                      <span className='label'>{this.state.readyState === 'unsent' ? 'Upload' : 'Uploading...'}</span>
+                    </button>
                   );
                 }
               })(this.state.imageUri)}
