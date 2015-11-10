@@ -1,32 +1,18 @@
 import uuid from 'uuid';
 import React from 'react';
+import { connectToStores } from 'fluxible-addons-react';
+import GyazoServiceStore from '../stores/GyazoServiceStore';
+import GyazoServiceAction from '../actions/GyazoServiceAction';
 import GyazoUploadFormComponent from '../components/GyazoUploadFormComponent';
-import GyazoService from '../models/GyazoService';
 
 class UploaderHandler extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      gyazoServices: []
-    };
-  }
+  static contextTypes = {
+    getStore: React.PropTypes.func.isRequired,
+    executeAction: React.PropTypes.func.isRequired
+  };
 
   componentDidMount() {
-    let model = new GyazoService();
-    (async () => {
-      await model.ready;
-      let gyazoServices = await model.all();
-      if (gyazoServices.length < 1) {
-        gyazoServices = [await model.save({
-          _id: uuid.v4(),
-          uri: 'https://gyazo.com/upload.cgi',
-          gyazoId: '',
-          useProxy: true
-        })];
-      }
-      this.setState({ gyazoServices });
-    })();
+    this.context.executeAction(GyazoServiceAction);
   }
 
   render() {
@@ -34,10 +20,13 @@ class UploaderHandler extends React.Component {
       <div id='UploaderHandler'>
         {((gyazoService) => gyazoService && (
           <GyazoUploadFormComponent gyazoId={gyazoService.gyazoId} id={gyazoService._id} uri={gyazoService.uri} useProxy={gyazoService.useProxy}/>
-        ))(this.state.gyazoServices[0])}
+        ))(this.props.gyazoServices[0])}
       </div>
     );
   }
 }
 
+UploaderHandler = connectToStores(UploaderHandler, [GyazoServiceStore], (context) => ({
+  gyazoServices: context.getStore(GyazoServiceStore).getGyazoServices()
+}));
 export default UploaderHandler;
