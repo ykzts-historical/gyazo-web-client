@@ -1,5 +1,4 @@
 import React from 'react';
-import camelcase from 'camelcase';
 import FormGroupHasFeedbackComponent from './FormGroupHasFeedbackComponent';
 import GyazoService from '../models/GyazoService';
 
