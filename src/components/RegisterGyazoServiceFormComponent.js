@@ -1,50 +1,45 @@
 import React from 'react';
+import { connectToStores } from 'fluxible-addons-react';
+import GyazoServiceStore from '../stores/GyazoServiceStore';
+import GyazoServiceAction from '../actions/GyazoServiceAction';
 import FormGroupHasFeedbackComponent from './FormGroupHasFeedbackComponent';
-import GyazoService from '../models/GyazoService';
 
 class RegisterGyazoServiceFormComponent extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      uri: 'https://gyazo.com/upload.cgi',
-      gyazoId: '',
-      useProxy: false
-    };
-  }
+  static contextTypes = {
+    getStore: React.PropTypes.func.isRequired,
+    executeAction: React.PropTypes.func.isRequired
+  };
 
-  componentDidMount() {
-    let _id = this.props._id;
-    let model = new GyazoService();
-    (async () => {
-      await model.ready;
-      let gyazoService = await model.find(_id);
-      if (!gyazoService) {
-        return;
-      }
-      this.setState(gyazoService);
-    })();
-  }
+  static propTypes = {
+    _id: React.PropTypes.string.isRequired,
+    currentGyazoService: React.PropTypes.object
+  };
 
-  handleSubmit(event) {
+  async handleSubmit(event) {
     event.preventDefault();
-    let form = event.target;
-    let model = new GyazoService();
-    (async () => {
-      await model.ready;
-      let gyazoService = await model.save({
-        uri: this.refs.uri.getCurrentValue(),
-        gyazoId: this.refs.gyazoId.getCurrentValue(),
-        useProxy: this.refs.useProxy.checked,
-        _id: this.props._id
-      });
-      this.setState(gyazoService);
-    })();
+    let gyazoService = {
+      _id: this.props._id,
+      uri: this.refs.uri.getCurrentValue(),
+      gyazoId: this.refs.gyazoId.getCurrentValue(),
+      useProxy: this.refs.useProxy.checked
+    };
+    await this.context.executeAction(GyazoServiceAction, { gyazoService });
     return false;
   }
 
-  handleChangeUseProxy({ target }) {
-    let useProxy = target.checked;
-    this.setState({ useProxy });
+  getCurrentUri() {
+    let gyazoService = this.props.currentGyazoService;
+    return (gyazoService || {}).uri;
+  }
+
+  getCurrentGyazoId() {
+    let gyazoService = this.props.currentGyazoService;
+    return (gyazoService || {}).gyazoId;
+  }
+
+  getUseProxy() {
+    let gyazoService = this.props.currentGyazoService;
+    return (gyazoService || {}).useProxy;
   }
 
   render() {
@@ -52,14 +47,14 @@ class RegisterGyazoServiceFormComponent extends React.Component {
       <div className='RegisterGyazoServiceFormComponent'>
         <form onSubmit={this.handleSubmit.bind(this)}>
           <fieldset>
-            <FormGroupHasFeedbackComponent id='gyazo-uri' label='Gyazo URI' name='uri' placeholder='https://' ref='uri' required={true} type='url' value={this.state.uri}/>
-            <FormGroupHasFeedbackComponent id='gyazo-id' label='Gyazo ID' name='gyazo-id' ref='gyazoId' type='text' value={this.state.gyazoId}/>
+            <FormGroupHasFeedbackComponent id='gyazo-uri' label='Gyazo URI' name='uri' placeholder='https://' ref='uri' required={true} type='url' value={this.getCurrentUri()}/>
+            <FormGroupHasFeedbackComponent id='gyazo-id' label='Gyazo ID' name='gyazo-id' ref='gyazoId' type='text' value={this.getCurrentGyazoId()}/>
             <fieldset className='form-group row'>
               <label className='sr-only'>use Proxy</label>
               <div className='col-sm-offset-2 col-sm-10'>
                 <div className='checkbox'>
                   <label>
-                    <input checked={this.state.useProxy} id='gyazo-use-proxy' name='use-proxy' onChange={this.handleChangeUseProxy.bind(this)} ref='useProxy' type='checkbox'/>
+                    <input defaultChecked={this.getUseProxy()} id='gyazo-use-proxy' name='use-proxy' ref='useProxy' type='checkbox'/>
                     <span>&nbsp;use Proxy</span>
                   </label>
                 </div>
@@ -77,4 +72,7 @@ class RegisterGyazoServiceFormComponent extends React.Component {
   }
 }
 
+RegisterGyazoServiceFormComponent = connectToStores(RegisterGyazoServiceFormComponent, [GyazoServiceStore], (context, props) => ({
+  currentGyazoService: context.getStore(GyazoServiceStore).getGyazoService({ id: props._id })
+}));
 export default RegisterGyazoServiceFormComponent;

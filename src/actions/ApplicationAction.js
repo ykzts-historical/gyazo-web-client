@@ -1,7 +1,4 @@
-function ApplicationAction(context, payload) {
-  return new Promise(function(resolve, reject) {
-    resolve();
-  });
-}
+let ApplicationAction = async (context, payload) => {
+};
 
 export default ApplicationAction;
