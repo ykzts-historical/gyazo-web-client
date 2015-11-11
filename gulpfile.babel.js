@@ -59,7 +59,7 @@ gulp.task('lint', function() {
     .pipe(eslint.failAfterError());
 });
 
-gulp.task('watch', ['build'], function() {
+gulp.task('watch', ['build:client'], function() {
   gulp.watch('./config/routes.js', ['build:client']);
   gulp.watch('./src/**/*.js', ['build:client']);
 });
