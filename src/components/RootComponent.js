@@ -6,7 +6,6 @@ const DEBUG = env.NODE_ENV !== 'production';
 
 class RootComponent extends React.Component {
   render() {
-    console.log(env);
     return (
       <html>
         <head>

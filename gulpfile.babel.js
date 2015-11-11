@@ -1,6 +1,9 @@
 import { env } from 'process';
 import gulp from 'gulp';
+import babel from 'gulp-babel';
 import eslint from 'gulp-eslint';
+import rename from 'gulp-rename';
+import replace from 'gulp-replace';
 import uglify from 'gulp-uglify';
 import rev from 'gulp-rev';
 import browserify from 'browserify';
@@ -10,7 +13,20 @@ import buffer from 'vinyl-buffer';
 
 const DEBUG = env.NODE_ENV !== 'production';
 
-gulp.task('build', ['build:client']);
+gulp.task('build', ['build:server', 'build:client']);
+
+gulp.task('build:server', function() {
+  var sources = [];
+  sources.push(gulp.src('./src/**/*.js')
+    .pipe(babel())
+    .pipe(gulp.dest('./lib')));
+  sources.push(gulp.src('./bin/gyazo-web-client.js')
+     .pipe(replace(/import\s(.+)\sfrom\s'\.\.\/src\/(.+)';/, (_, m, f) =>
+       (`import 'babel-polyfill';\nimport ${f} from '../lib/${m}';\n`)))
+    .pipe(babel())
+    .pipe(rename('gyazo-web-client'))
+    .pipe(gulp.dest('./bin')));
+});
 
 gulp.task('build:client', ['lint'], function() {
   let src = browserify({
