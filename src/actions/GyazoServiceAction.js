@@ -8,12 +8,16 @@ const DEFAULT_GYAZO_SERVICE_PROPERTIES = {
 };
 
 let GyazoServiceAction = async (context, payload) => {
+  let gyazoServices = [];
+  let props = payload.gyazoService || {};
   let gyazoService = new GyazoService();
   await gyazoService.ready;
-  let gyazoServices = await gyazoService.all();
+  if (!props._id) {
+    gyazoServices = await gyazoService.all();
+  }
   if (gyazoServices.length < 1) {
-    let _id = uuid.v4();
-    let props = Object.assign({}, DEFAULT_GYAZO_SERVICE_PROPERTIES, { _id });
+    props._id = props._id || uuid.v4();
+    props = Object.assign({}, DEFAULT_GYAZO_SERVICE_PROPERTIES, props);
     gyazoServices = [await gyazoService.save(props)];
   }
   context.dispatch('SET_GYAZO_SERVICES', { gyazoServices });

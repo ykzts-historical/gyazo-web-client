@@ -23,6 +23,16 @@ class GyazoServiceStore extends BaseStore {
     return this.gyazoServices;
   }
 
+  getGyazoService({ id }) {
+    let gyazoServices = this.getGyazoServices();
+    for (let gyazoService of gyazoServices) {
+      if (gyazoService._id === id) {
+        return gyazoService;
+      }
+    }
+    return null;
+  }
+
   dehydrate() {
     return {
       gyazoServices: this.getGyazoServices()
