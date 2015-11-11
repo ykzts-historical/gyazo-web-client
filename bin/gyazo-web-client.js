@@ -1,4 +1,4 @@
-#!/bin/node/env node
+#!/usr/bin/env node
 
 import { env } from 'process';
 import server from '../src/server';

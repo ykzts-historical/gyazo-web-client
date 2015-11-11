@@ -1,4 +1,8 @@
+import { env } from 'process';
 import React from 'react';
+import manifest from '../../public/manifest';
+
+const DEBUG = env.NODE_ENV !== 'production';
 
 class RootComponent extends React.Component {
   render() {
@@ -14,7 +18,7 @@ class RootComponent extends React.Component {
         <body style={{paddingTop: '70px'}}>
           <div id='app' dangerouslySetInnerHTML={{__html: this.props.markup}}/>
           <script dangerouslySetInnerHTML={{__html: this.props.state}}/>
-          <script src='/bundle.js'/>
+          <script src={`/${DEBUG ? 'bundle.js' : manifest['bundle.js']}`}/>
         </body>
       </html>
     );
