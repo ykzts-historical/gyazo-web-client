@@ -1,6 +1,5 @@
 import 'babel-polyfill';
 import 'whatwg-fetch';
-import 'holderjs';
 import ReactDOM from 'react-dom';
 import { createElementWithContext } from 'fluxible-addons-react';
 import application from './application';
