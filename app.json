@@ -1,0 +1,12 @@
+{
+  "name": "gyazo-web-client",
+  "description": "Web client for Gyazo.",
+  "website": "https://github.com/ykzts/gyazo-web-client",
+  "repository": "https://github.com/ykzts/gyazo-web-client",
+  "success_url": "/",
+  "scripts": {
+  },
+  "env": {
+  },
+  "image": "heroku/nodejs"
+}
