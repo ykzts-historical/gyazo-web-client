@@ -1,28 +1,25 @@
 import Base from './Base';
 
-class GyazoService extends Base {
+class Image extends Base {
   get storeName() {
-    return 'GyazoService';
+    return 'Image';
   }
 
   get schema() {
     return {
       properties: {
-        name: {
+        fileName: {
           type: 'string'
         },
         uri: {
           type: 'string'
         },
-        gyazoId: {
+        uploaded_at: {
           type: 'string'
-        },
-        useProxy: {
-          type: 'boolean'
         }
       }
     };
   }
 }
 
-export default GyazoService;
+export default Image;

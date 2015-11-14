@@ -1,9 +1,17 @@
 import uuid from 'uuid';
 import React from 'react';
+import { connectToStores } from 'fluxible-addons-react';
+import ImageStore from '../stores/ImageStore';
+import saveUploadedImageAction from '../actions/saveUploadedImageAction';
 
 const EXTERNAL_URI_PATTERN = /^https?:\/\//;
 
 class GyazoUploadFormComponent extends React.Component {
+  static contextTypes = {
+    getStore: React.PropTypes.func.isRequired,
+    executeAction: React.PropTypes.func.isRequired
+  };
+
   static propTypes = {
     id: React.PropTypes.string,
     uri: React.PropTypes.string.isRequired,
@@ -29,9 +37,10 @@ class GyazoUploadFormComponent extends React.Component {
   handleSubmit(event) {
     event.preventDefault();
     let image = (this.refs.gyazoImageData.files || [])[0];
-    if (!image) {
+    if (!(image instanceof File)) {
       return false;
     }
+    let fileName = image.name;
     let formData = new FormData();
     formData.append('id', this.props.gyazoId);
     formData.append('imagedata', image);
@@ -44,7 +53,13 @@ class GyazoUploadFormComponent extends React.Component {
       let response = await fetch(request);
       this.setState({ readyState: 'loading' });
       let imageUri = await response.text();
+      let uploaded_at = new Date();
       this.setState({ readyState: 'done', imageUri });
+      this.context.executeAction(saveUploadedImageAction, {
+        fileName,
+        uri: imageUri,
+        uploaded_at
+      });
     })();
     return false;
   }
@@ -97,4 +112,6 @@ class GyazoUploadFormComponent extends React.Component {
   }
 }
 
+GyazoUploadFormComponent = connectToStores(GyazoUploadFormComponent, [ImageStore], (context) => ({
+}));
 export default GyazoUploadFormComponent;
