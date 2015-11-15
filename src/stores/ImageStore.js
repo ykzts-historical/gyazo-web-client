@@ -22,7 +22,7 @@ class ImageStore extends BaseStore {
   getImages() {
     let images = [].concat(this.images);
     images.sort((previousImage, image) =>
-      previousImage.uploaded_at < image.uploaded_at
+      previousImage.uploadedAt < image.uploadedAt
     );
     return images;
   }

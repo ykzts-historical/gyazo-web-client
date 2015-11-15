@@ -24,7 +24,7 @@ class UploadedImagesComponent extends React.Component {
         <div className='row'>
           {this.props.images.map((image) => (
             <div className='col-sm-4' key={image._id}>
-              <ImageCardComponent uploadedAt={image.uploaded_at} uri={image.uri}/>
+              <ImageCardComponent uploadedAt={image.uploadedAt} uri={image.uri}/>
             </div>
           ))}
         </div>

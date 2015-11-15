@@ -54,12 +54,12 @@ class GyazoUploadFormComponent extends React.Component {
       let response = await fetch(request);
       this.setState({ readyState: 'loading' });
       let imageUri = await response.text();
-      let uploaded_at = new Date();
+      let uploadedAt = new Date();
       this.setState({ readyState: 'done', imageUri });
       this.context.executeAction(saveUploadedImageAction, {
         fileName,
         uri: imageUri,
-        uploaded_at
+        uploadedAt
       });
     })();
     form.reset();

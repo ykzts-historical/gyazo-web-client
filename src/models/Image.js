@@ -14,7 +14,7 @@ class Image extends Base {
         uri: {
           type: 'string'
         },
-        uploaded_at: {
+        uploadedAt: {
           type: 'string'
         }
       }
