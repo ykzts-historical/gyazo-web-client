@@ -18,7 +18,7 @@ class ImageCardComponent extends React.Component {
           </div>
           <footer className='card-footer text-muted text-right'>
             <span className='uploaded-at'>
-              <time dateTime={this.props.uploadedAt} is='relative-time'>{this.props.ploadedAt}</time>
+              <time dateTime={this.props.uploadedAt}>{this.props.ploadedAt}</time>
             </span>
           </footer>
         </div>
