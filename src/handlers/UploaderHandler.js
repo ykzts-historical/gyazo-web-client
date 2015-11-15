@@ -4,6 +4,7 @@ import { connectToStores } from 'fluxible-addons-react';
 import GyazoServiceStore from '../stores/GyazoServiceStore';
 import GyazoServiceAction from '../actions/GyazoServiceAction';
 import GyazoUploadFormComponent from '../components/GyazoUploadFormComponent';
+import UploadedImagesComponent from '../components/UploadedImagesComponent';
 
 class UploaderHandler extends React.Component {
   static contextTypes = {
@@ -21,6 +22,7 @@ class UploaderHandler extends React.Component {
         {((gyazoService) => gyazoService && (
           <GyazoUploadFormComponent gyazoId={gyazoService.gyazoId} id={gyazoService._id} uri={gyazoService.uri} useProxy={gyazoService.useProxy}/>
         ))(this.props.gyazoServices[0])}
+        <UploadedImagesComponent/>
       </div>
     );
   }
