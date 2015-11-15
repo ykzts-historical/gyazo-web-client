@@ -41,6 +41,7 @@ class GyazoUploadFormComponent extends React.Component {
       return false;
     }
     let fileName = image.name;
+    let form = event.target;
     let formData = new FormData();
     formData.append('id', this.props.gyazoId);
     formData.append('imagedata', image);
@@ -61,6 +62,7 @@ class GyazoUploadFormComponent extends React.Component {
         uploaded_at
       });
     })();
+    form.reset();
     return false;
   }
 
@@ -80,30 +82,20 @@ class GyazoUploadFormComponent extends React.Component {
       <div className='GyazoUploadFormComponent'>
         <form className='form-horizontal' method='post' onSubmit={this.handleSubmit.bind(this)}>
           <fieldset className='card'>
-            <img className='card-img-top img-responsive' ref='image' src={this.state.imageUri || ''} style={{display: this.state.imageUri ? 'inline-block' : 'none'}}/>
+            <img className='card-img-top img-responsive' ref='image' src={this.state.imageUri || ''} style={{display: this.state.imageUri && !EXTERNAL_URI_PATTERN.test(this.state.imageUri) ? 'inline-block' : 'none'}}/>
             <div className='card-block'>
-              <label className='file' htmlFor='gyazo-image' style={{display: this.state.imageUri ? 'none' : 'inline-block', maxWidth: '100%'}}>
+              <label className='file' htmlFor='gyazo-image' style={{display: this.state.imageUri && !EXTERNAL_URI_PATTERN.test(this.state.imageUri) ? 'none' : 'inline-block', maxWidth: '100%'}}>
                 <input className='file' id='gyazo-image' name='imagedata' onChange={this.handleChange.bind(this)} ref='gyazoImageData' required={true} style={{maxWidth: '100%'}} type='file'/>
                 <span className='file-custom'/>
               </label>
-              {((imageUri) => {
-                if (!imageUri) {
-                  return;
-                } else if (EXTERNAL_URI_PATTERN.test(imageUri)) {
-                  return (
-                    <a href={imageUri} style={{wordBreak: 'break-all', wordWrap: 'break-word'}}>{imageUri}</a>
-                  );
-                } else {
-                  return (
-                    <button className='btn btn-primary' disabled={this.state.readyState !== 'unsent'} type='submit'>
-                      {((readyState) => readyState !== 'unsent' && (
-                        <i className='fa fa-spin fa-spinner'/>
-                      ))(this.state.readyState)}
-                      <span className='label'>{this.state.readyState === 'unsent' ? 'Upload' : 'Uploading...'}</span>
-                    </button>
-                  );
-                }
-              })(this.state.imageUri)}
+              {((imageUri) => imageUri && !EXTERNAL_URI_PATTERN.test(imageUri) && (
+                <button className='btn btn-primary' disabled={this.state.readyState !== 'unsent'} type='submit'>
+                  {((readyState) => readyState !== 'unsent' && (
+                    <i className='fa fa-spin fa-spinner'/>
+                  ))(this.state.readyState)}
+                  <span className='label'>{this.state.readyState === 'unsent' ? 'Upload' : 'Uploading...'}</span>
+                  </button>
+              ))(this.state.imageUri)}
             </div>
           </fieldset>
         </form>

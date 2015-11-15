@@ -6,7 +6,7 @@ let saveUploadedImageAction = async (context, payload) => {
   let image = new Image();
   await image.ready;
   let images = [await image.save({ fileName, uri, uploaded_at })];
-  context.dispatch('SAVE_UPLOADED_IMAGE', { images });
+  context.dispatch('SET_UPLOADED_IMAGES', { images });
 };
 
 export default saveUploadedImageAction;

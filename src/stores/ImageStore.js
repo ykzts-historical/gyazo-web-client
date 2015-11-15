@@ -3,7 +3,7 @@ import { BaseStore } from 'fluxible/addons';
 class ImageStore extends BaseStore {
   static storeName = 'ImageStore';
   static handlers = {
-    SAVE_UPLOADED_IMAGE: 'saveUploadedImage'
+    SET_UPLOADED_IMAGES: 'setUploadedImages'
   }
 
   constructor(dispacher) {
@@ -11,7 +11,7 @@ class ImageStore extends BaseStore {
     this.images = [];
   }
 
-  saveUploadedImage({ images }) {
+  setUploadedImages({ images }) {
     if (Array.isArray(images) && images.length <= 0) {
       return;
     }
@@ -20,7 +20,11 @@ class ImageStore extends BaseStore {
   }
 
   getImages() {
-    return this.images;
+    let images = [].concat(this.images);
+    images.sort((previousImage, image) =>
+      previousImage.uploaded_at < image.uploaded_at
+    );
+    return images;
   }
 
   dehydrate() {
