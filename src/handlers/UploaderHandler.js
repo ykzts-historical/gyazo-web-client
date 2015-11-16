@@ -13,7 +13,9 @@ class UploaderHandler extends React.Component {
   };
 
   componentDidMount() {
-    this.context.executeAction(GyazoServiceAction);
+    setImmediate(() => {
+      this.context.executeAction(GyazoServiceAction);
+    });
   }
 
   render() {
