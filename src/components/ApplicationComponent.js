@@ -1,25 +1,37 @@
 import React from 'react';
-import { provideContext } from 'fluxible-addons-react';
+import { provideContext, connectToStores } from 'fluxible-addons-react';
 import { handleHistory } from 'fluxible-router';
+import ErrorHandler from '../handlers/ErrorHandler';
 import NavigationComponent from './NavigationComponent';
+import ErrorStore from '../stores/ErrorStore';
 
 //@handleHistory
 //@provideContext
 class ApplicationComponent extends React.Component {
+  getHandler() {
+    let Handler = this.props.currentRoute && this.props.currentRoute.get('handler');
+    if (!Handler) {
+      Handler = ErrorHandler;
+    }
+    return <Handler/>;
+  }
+
   render() {
-    let Handler = this.props.currentRoute.get('handler');
 
     return (
       <div id='ApplicationComponent'>
         <NavigationComponent/>
         <div className='container'>
-          <Handler/>
+          {this.getHandler()}
         </div>
       </div>
     );
   }
 }
 
+ApplicationComponent = connectToStores(ApplicationComponent, [ErrorStore], (context) => ({
+  error: context.getStore(ErrorStore).getError()
+}));
 ApplicationComponent = handleHistory(ApplicationComponent);
 ApplicationComponent = provideContext(ApplicationComponent);
 export default ApplicationComponent;
