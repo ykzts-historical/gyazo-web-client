@@ -3,12 +3,18 @@ import { BaseStore } from 'fluxible/addons';
 class ImageStore extends BaseStore {
   static storeName = 'ImageStore';
   static handlers = {
+    PREPEND_UPLOADED_IMAGES: 'prependUploadedImages',
     SET_UPLOADED_IMAGES: 'setUploadedImages'
   }
 
   constructor(dispacher) {
     super(dispacher);
     this.images = [];
+  }
+
+  prependUploadedImages({ images }) {
+    this.images = [].concat(images, this.images);
+    this.emitChange();
   }
 
   setUploadedImages({ images }) {
