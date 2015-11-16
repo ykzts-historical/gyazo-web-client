@@ -15,7 +15,7 @@ class ImageStore extends BaseStore {
     if (Array.isArray(images) && images.length <= 0) {
       return;
     }
-    this.images = this.images.concat(images);
+    this.images = [].concat(images);
     this.emitChange();
   }
 
