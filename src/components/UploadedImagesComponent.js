@@ -15,7 +15,9 @@ class UploadedImagesComponent extends React.Component {
   }
 
   componentDidMount() {
-    this.context.executeAction(loadUploadedImagesAction);
+    setImmediate(() => {
+      this.context.executeAction(loadUploadedImagesAction);
+    });
   }
 
   render() {
