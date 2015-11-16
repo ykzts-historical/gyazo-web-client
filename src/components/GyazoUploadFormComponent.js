@@ -73,7 +73,7 @@ class GyazoUploadFormComponent extends React.Component {
       return false;
     }
     let imageUri = URL.createObjectURL(file);
-    this.setState({ imageUri });
+    this.setState({ readyState: 'unsent', imageUri });
     return false;
   }
 
