@@ -4,14 +4,15 @@ class FormGroupHasFeedbackComponent extends React.Component {
   static propTypes = {
     id: React.PropTypes.string.isRequired,
     name: React.PropTypes.string.isRequired,
-    type: React.PropTypes.string.isRequired,
+    onChange: React.PropTypes.func,
     required: React.PropTypes.bool.isRequired,
+    type: React.PropTypes.string.isRequired,
     value: React.PropTypes.string.isRequired
   }
 
   static defaultProps = {
-    type: 'text',
     required: false,
+    type: 'text',
     value: ''
   }
 
@@ -19,7 +20,7 @@ class FormGroupHasFeedbackComponent extends React.Component {
     super(props);
 
     this.state = {
-      value: null,
+      value: props.value,
       valid: false
     };
   }
@@ -30,18 +31,25 @@ class FormGroupHasFeedbackComponent extends React.Component {
     this.setState({ valid });
   }
 
-  handleChange({ target }) {
+  handleChange(event) {
+    let target = event.target;
     let value = target.value;
     let valid = this._validate(target);
-    this.setState({ value, valid });
+    (async () => {
+      await this.setState({ value, valid });
+      if (typeof this.props.onChange === 'function') {
+        this.props.onChange.call(this, event);
+      }
+    })();
     return false;
   }
 
   getCurrentValue() {
-    if (this.state.value === null || typeof(this.state.value) === 'undefined') {
-      return this.props.value;
-    }
     return this.state.value;
+  }
+
+  hasChanged() {
+    return this.props.value !== this.state.value;
   }
 
   _validate(target) {
