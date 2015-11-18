@@ -1,15 +1,25 @@
 import React from 'react';
+import { connectToStores } from 'fluxible-addons-react';
 import { NavLink } from 'fluxible-router';
+import RouteStore from '../stores/RouteStore';
 
 class NavigationComponent extends React.Component {
+  static contentTypes = {
+    getStore: React.PropTypes.func.isRequired
+  };
+
+  static propTypes = {
+    currentRoute: React.PropTypes.object
+  };
+
   render() {
     return (
       <div id='NavigationComponent'>
         <nav className='bg-faded navbar navbar-fixed-top navbar-light'>
           <NavLink className='navbar-brand' routeName='uploader'>Gy</NavLink>
-          <ul className='nav navbar-nav pull-right'>
+          <ul className='nav navbar-nav pull-right' style={{ display: this.props.currentRoute && this.props.currentRoute.get('name') === 'settings' ? 'none' : 'block' }}>
             <li className='nav-item'>
-              <NavLink activeClass='active' className='nav-link' routeName='settings'>
+              <NavLink className='nav-link' routeName='settings'>
                 <i className='fa fa-cog fa-lg'/>
               </NavLink>
             </li>
@@ -20,4 +30,7 @@ class NavigationComponent extends React.Component {
   }
 }
 
+NavigationComponent = connectToStores(NavigationComponent, [RouteStore], (context) => ({
+  currentRoute: context.getStore(RouteStore).getCurrentRoute()
+}));
 export default NavigationComponent;
