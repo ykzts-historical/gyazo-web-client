@@ -2,7 +2,7 @@ import uuid from 'uuid';
 import React from 'react';
 import { connectToStores } from 'fluxible-addons-react';
 import GyazoServiceStore from '../stores/GyazoServiceStore';
-import GyazoServiceAction from '../actions/GyazoServiceAction';
+import loadGyazoServiceAction from '../actions/loadGyazoServiceAction';
 import RegisterGyazoServiceFormComponent from '../components/RegisterGyazoServiceFormComponent';
 
 class SettingsHandler extends React.Component {
@@ -21,16 +21,16 @@ class SettingsHandler extends React.Component {
 
   componentDidMount() {
     setImmediate(() => {
-      this.context.executeAction(GyazoServiceAction);
+      this.context.executeAction(loadGyazoServiceAction);
     });
   }
 
   render() {
     return (
       <div id='SettingsHandler'>
-        {this.props.gyazoServices.map((gyazoService) => (
-          <RegisterGyazoServiceFormComponent key={gyazoService._id} _id={gyazoService._id}/>
-        ))}
+        {((gyazoService) => gyazoService && (
+          <RegisterGyazoServiceFormComponent _id={gyazoService._id}/>
+        ))(this.props.gyazoServices[0])}
       </div>
     );
   }

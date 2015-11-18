@@ -12,7 +12,7 @@ class GyazoServiceStore extends BaseStore {
   }
 
   setGyazoServices(payload) {
-    if (payload.gyazoServices < 1) {
+    if (payload.gyazoServices.length < 1) {
       return;
     }
     this.gyazoServices = payload.gyazoServices;

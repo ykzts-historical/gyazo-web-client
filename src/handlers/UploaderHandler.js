@@ -2,7 +2,7 @@ import uuid from 'uuid';
 import React from 'react';
 import { connectToStores } from 'fluxible-addons-react';
 import GyazoServiceStore from '../stores/GyazoServiceStore';
-import GyazoServiceAction from '../actions/GyazoServiceAction';
+import loadGyazoServiceAction from '../actions/loadGyazoServiceAction';
 import GyazoUploadFormComponent from '../components/GyazoUploadFormComponent';
 import UploadedImagesComponent from '../components/UploadedImagesComponent';
 
@@ -14,7 +14,7 @@ class UploaderHandler extends React.Component {
 
   componentDidMount() {
     setImmediate(() => {
-      this.context.executeAction(GyazoServiceAction);
+      this.context.executeAction(loadGyazoServiceAction);
     });
   }
 
