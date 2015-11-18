@@ -39,9 +39,9 @@ class GyazoUploadFormComponent extends React.Component {
     this.context.executeAction(uploadImageAction, {
       uri: this.props.uri,
       gyazoId: this.props.gyazoId,
-      imageFile
+      imageFile,
+      form
     });
-    form.reset();
     return false;
   }
 
@@ -53,6 +53,10 @@ class GyazoUploadFormComponent extends React.Component {
     }
     this.context.executeAction(selectUnsentImageFile, { imageFile });
     return false;
+  }
+
+  canSubmit() {
+    return ['unsent', 'done'].includes(this.props.readyState);
   }
 
   render() {
@@ -67,11 +71,11 @@ class GyazoUploadFormComponent extends React.Component {
                 <span className='file-custom'/>
               </label>
               {((imageUri) => imageUri && (
-                <button className='btn btn-primary' disabled={this.props.readyState !== 'unsent'} type='submit'>
-                  {((readyState) => readyState !== 'unsent' && (
+                <button className='btn btn-primary' disabled={!this.canSubmit()} type='submit'>
+                  {((readyState) => !this.canSubmit() && (
                     <i className='fa fa-spin fa-spinner'/>
                   ))(this.props.readyState)}
-                  <span className='label'>{this.props.readyState === 'unsent' ? 'Upload' : 'Uploading...'}</span>
+                  <span className='label'>{this.canSubmit() ? 'Upload' : 'Uploading...'}</span>
                   </button>
               ))(this.props.imageUri)}
             </div>

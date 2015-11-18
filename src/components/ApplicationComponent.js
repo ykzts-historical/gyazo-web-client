@@ -3,6 +3,7 @@ import { provideContext, connectToStores } from 'fluxible-addons-react';
 import { handleHistory } from 'fluxible-router';
 import ErrorHandler from '../handlers/ErrorHandler';
 import NavigationComponent from './NavigationComponent';
+import AlertComponent from './AlertComponent';
 import ErrorStore from '../stores/ErrorStore';
 
 //@handleHistory
@@ -17,11 +18,11 @@ class ApplicationComponent extends React.Component {
   }
 
   render() {
-
     return (
       <div id='ApplicationComponent'>
         <NavigationComponent/>
         <div className='container'>
+          <AlertComponent/>
           {this.getHandler()}
         </div>
       </div>
