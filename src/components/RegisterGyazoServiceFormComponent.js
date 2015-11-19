@@ -63,16 +63,16 @@ class RegisterGyazoServiceFormComponent extends React.Component {
   render() {
     return (
       <div className='RegisterGyazoServiceFormComponent'>
-        <form onSubmit={this.handleSubmit.bind(this)}>
+        <form onSubmit={::this.handleSubmit}>
           <fieldset>
-            <FormGroupHasFeedbackComponent id='gyazo-uri' label='Gyazo URI' name='uri' onChange={this.handleChange.bind(this)} placeholder='https://' ref='uri' required={true} type='url' value={this.getCurrentUri()}/>
-            <FormGroupHasFeedbackComponent id='gyazo-id' label='Gyazo ID' name='gyazo-id' onChange={this.handleChange.bind(this)} ref='gyazoId' type='text' value={this.getCurrentGyazoId()}/>
+            <FormGroupHasFeedbackComponent id='gyazo-uri' label='Gyazo URI' name='uri' onChange={::this.handleChange} placeholder='https://' ref='uri' required={true} type='url' value={this.getCurrentUri()}/>
+            <FormGroupHasFeedbackComponent id='gyazo-id' label='Gyazo ID' name='gyazo-id' onChange={::this.handleChange} ref='gyazoId' type='text' value={this.getCurrentGyazoId()}/>
             <fieldset className='form-group row'>
               <label className='sr-only'>use Proxy</label>
               <div className='col-sm-offset-2 col-sm-10'>
                 <div className='checkbox'>
                   <label>
-                    <input defaultChecked={this.getUseProxy()} id='gyazo-use-proxy' name='use-proxy' onChange={this.handleChange.bind(this)} ref='useProxy' type='checkbox'/>
+                    <input defaultChecked={this.getUseProxy()} id='gyazo-use-proxy' name='use-proxy' onChange={::this.handleChange} ref='useProxy' type='checkbox'/>
                     <span>&nbsp;use Proxy</span>
                   </label>
                 </div>
