@@ -30,7 +30,7 @@ class AlertComponent extends React.Component {
     return (
       <div className='AlertComponent'>
         <div className={`alert alert-${this.props.type}`} role='alert' style={{ display: this.props.message ? 'block' : 'none' }}>
-          <button className='close' data-dissmiss='alert' data-label='Close' onClick={this.handleClick.bind(this)} type='button'>
+          <button className='close' data-dissmiss='alert' data-label='Close' onClick={::this.handleClick} type='button'>
             <span aria-hidden='true'>&times;</span>
             <span className='sr-only'>Close</span>
           </button>

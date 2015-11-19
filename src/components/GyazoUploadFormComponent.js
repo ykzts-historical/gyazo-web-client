@@ -62,12 +62,12 @@ class GyazoUploadFormComponent extends React.Component {
   render() {
     return (
       <div className='GyazoUploadFormComponent'>
-        <form className='form-horizontal' method='post' onSubmit={this.handleSubmit.bind(this)}>
+        <form className='form-horizontal' method='post' onSubmit={::this.handleSubmit}>
           <fieldset className='card'>
             <img className='card-img-top img-responsive' ref='image' src={this.props.imageUri || ''} style={{display: this.props.imageUri ? 'inline-block' : 'none'}}/>
             <div className='card-block'>
               <label className='file' htmlFor='gyazo-image' style={{display: this.props.imageUri ? 'none' : 'inline-block', maxWidth: '100%'}}>
-                <input className='file' id='gyazo-image' name='imagedata' onChange={this.handleChange.bind(this)} ref='gyazoImageData' required={true} style={{maxWidth: '100%'}} type='file'/>
+                <input className='file' id='gyazo-image' name='imagedata' onChange={::this.handleChange} ref='gyazoImageData' required={true} style={{maxWidth: '100%'}} type='file'/>
                 <span className='file-custom'/>
               </label>
               {((imageUri) => imageUri && (
