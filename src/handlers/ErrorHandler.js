@@ -2,6 +2,9 @@ import React from 'react';
 import { connectToStores } from 'fluxible-addons-react';
 import ErrorStore from '../stores/ErrorStore';
 
+@connectToStores([ErrorStore], (context) => ({
+  error: context.getStore(ErrorStore).getError() || { message: '' }
+}))
 class ErrorHandler extends React.Component {
   render() {
     return (
@@ -12,7 +15,4 @@ class ErrorHandler extends React.Component {
   }
 }
 
-ErrorHandler = connectToStores(ErrorHandler, [ErrorStore], (context) => ({
-  error: context.getStore(ErrorStore).getError() || { message: '' }
-}));
 export default ErrorHandler;

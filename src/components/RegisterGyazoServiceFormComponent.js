@@ -4,6 +4,9 @@ import GyazoServiceStore from '../stores/GyazoServiceStore';
 import saveGyazoServiceAction from '../actions/saveGyazoServiceAction';
 import FormGroupHasFeedbackComponent from './FormGroupHasFeedbackComponent';
 
+@connectToStores([GyazoServiceStore], (context, props) => ({
+  currentGyazoService: context.getStore(GyazoServiceStore).getGyazoService({ id: props._id })
+}))
 class RegisterGyazoServiceFormComponent extends React.Component {
   static contextTypes = {
     getStore: React.PropTypes.func.isRequired,
@@ -90,7 +93,4 @@ class RegisterGyazoServiceFormComponent extends React.Component {
   }
 }
 
-RegisterGyazoServiceFormComponent = connectToStores(RegisterGyazoServiceFormComponent, [GyazoServiceStore], (context, props) => ({
-  currentGyazoService: context.getStore(GyazoServiceStore).getGyazoService({ id: props._id })
-}));
 export default RegisterGyazoServiceFormComponent;

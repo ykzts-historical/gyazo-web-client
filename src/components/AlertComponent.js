@@ -3,6 +3,13 @@ import { connectToStores } from 'fluxible-addons-react';
 import AlertStore from '../stores/AlertStore';
 import showAlertAction from '../actions/showAlertAction';
 
+@connectToStores([AlertStore], (context) => {
+  let alertStore = context.getStore(AlertStore);
+  return {
+    type: alertStore.getCurrentType(),
+    message: alertStore.getCurrentMessage()
+  };
+})
 class AlertComponent extends React.Component {
   static contextTypes = {
     executeAction: React.PropTypes.func.isRequired,
@@ -66,11 +73,4 @@ class AlertComponent extends React.Component {
   }
 }
 
-AlertComponent = connectToStores(AlertComponent, [AlertStore], (context) => {
-  let alertStore = context.getStore(AlertStore);
-  return {
-    type: alertStore.getCurrentType(),
-    message: alertStore.getCurrentMessage()
-  };
-});
 export default AlertComponent;
