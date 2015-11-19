@@ -31,15 +31,13 @@ class RegisterGyazoServiceFormComponent extends React.Component {
 
   handleSubmit(event) {
     event.preventDefault();
-    (async () => {
-      await this.context.executeAction(saveGyazoServiceAction, {
-        _id: this.props._id,
-        uri: this.refs.uri.getCurrentValue(),
-        gyazoId: this.refs.gyazoId.getCurrentValue(),
-        useProxy: this.refs.useProxy.checked
-      });
-      this.setState({ hasChanged: false });
-    })();
+    this.context.executeAction(saveGyazoServiceAction, {
+      _id: this.props._id,
+      uri: this.refs.uri.getCurrentValue(),
+      gyazoId: this.refs.gyazoId.getCurrentValue(),
+      useProxy: this.refs.useProxy.checked
+    });
+    this.setState({ hasChanged: false });
     return false;
   }
 
