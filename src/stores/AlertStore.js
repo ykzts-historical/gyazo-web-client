@@ -3,6 +3,7 @@ import { BaseStore } from 'fluxible/addons';
 class AlertStore extends BaseStore {
   static storeName = 'AlertStore';
   static handlers = {
+    NAVIGATE_START: 'handleNavigateStart',
     SET_ALERT_MESSAGE: 'setAlertMessage'
   };
 
@@ -11,6 +12,12 @@ class AlertStore extends BaseStore {
 
     this.type = 'info';
     this.message = null;
+  }
+
+  handleNavigateStart() {
+    this.type = 'info';
+    this.message = null;
+    this.emitChange();
   }
 
   setAlertMessage({ type, message }) {
