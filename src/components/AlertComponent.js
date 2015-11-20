@@ -19,17 +19,42 @@ class AlertComponent extends React.Component {
     message: null
   };
 
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      visible: !!props.message
+    };
+    this.timer = undefined;
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.message) {
+      this.setState({ visible: true }, () => {
+        this.timer && clearTimeout(this.timer);
+        this.timer = setTimeout(() => {
+          this.setState({ visible: false });
+          clearTimeout(this.timer);
+          this.timer = undefined;
+        }, 3000);
+      });
+    } else {
+      this.setState({ visible: false });
+    }
+  }
+
+  componentWillUnmount() {
+    this.timer && clearTimeout(this.timer);
+  }
+
   handleClick() {
-    this.context.executeAction(showAlertAction, {
-      type: 'info',
-      message: null
-    });
+    this.setState({ visible: false });
   }
 
   render() {
     return (
       <div className='AlertComponent'>
-        <div className={`alert alert-${this.props.type}`} role='alert' style={{ display: this.props.message ? 'block' : 'none' }}>
+        <div className={`alert alert-${this.props.type}`} role='alert' style={{ display: this.state.visible ? 'block' : 'none' }}>
           <button className='close' data-dissmiss='alert' data-label='Close' onClick={::this.handleClick} type='button'>
             <span aria-hidden='true'>&times;</span>
             <span className='sr-only'>Close</span>
