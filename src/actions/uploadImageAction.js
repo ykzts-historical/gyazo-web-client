@@ -8,7 +8,7 @@ function validateUri(uri) {
   return validity.valid;
 }
 
-async function uploadImageAction(context, { uri, gyazoId, imageFile, form }) {
+async function uploadImageAction(context, { uri, gyazoId, imageFile }) {
   let imageUri;
   let formData = new FormData();
   formData.append('id', gyazoId);
@@ -41,7 +41,7 @@ async function uploadImageAction(context, { uri, gyazoId, imageFile, form }) {
       uploadedAt: new Date()
     });
     imageUri = null;
-    form.reset();
+    context.dispatch('SET_IMAGE_FILE', { imageFile: null });
     context.dispatch('SET_ALERT_MESSAGE', {
       type: 'success',
       message: 'Upload image has been completed.'

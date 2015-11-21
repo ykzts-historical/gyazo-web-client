@@ -15,6 +15,7 @@ class GyazoUploadFormComponent extends React.Component {
   static propTypes = {
     gyazoId: React.PropTypes.string.isRequired,
     id: React.PropTypes.string,
+    imageFile: React.PropTypes.object,
     imageUri: React.PropTypes.string,
     readyState: React.PropTypes.string.isRequired,
     uri: React.PropTypes.string.isRequired,
@@ -23,6 +24,7 @@ class GyazoUploadFormComponent extends React.Component {
 
   static defaultProps = {
     gyazoId: '',
+    imageFile: null,
     imageUri: null,
     readyState: 'unsent',
     uri: 'https://gyazo.com/upload.cgi',
@@ -31,24 +33,22 @@ class GyazoUploadFormComponent extends React.Component {
 
   handleSubmit(event) {
     event.preventDefault();
-    let form = event.target;
-    let imageFile = (this.refs.gyazoImageData.files || [])[0];
+    let imageFile = this.props.imageFile;
     if (!(imageFile instanceof File)) {
       return false;
     }
     this.context.executeAction(uploadImageAction, {
       uri: this.props.uri,
       gyazoId: this.props.gyazoId,
-      imageFile,
-      form
+      imageFile
     });
     return false;
   }
 
   handleChange(event) {
     event.preventDefault();
-    let { target: { files: [imageFile, ..._] } } = event;
-    if (typeof imageFile === 'undefined') {
+    let imageFile = (this.refs.gyazoImageData.files || [])[0];
+    if (!(imageFile instanceof File)) {
       return false;
     }
     this.context.executeAction(selectUnsentImageFile, { imageFile });
@@ -67,7 +67,7 @@ class GyazoUploadFormComponent extends React.Component {
             <img className='card-img-top img-responsive' ref='image' src={this.props.imageUri || ''} style={{display: this.props.imageUri ? 'inline-block' : 'none'}}/>
             <div className='card-block'>
               <label className='file' htmlFor='gyazo-image' style={{display: this.props.imageUri ? 'none' : 'inline-block', maxWidth: '100%'}}>
-                <input className='file' id='gyazo-image' name='imagedata' onChange={::this.handleChange} ref='gyazoImageData' required={true} style={{maxWidth: '100%'}} type='file'/>
+                <input className='file' id='gyazo-image' name='imagedata' onChange={::this.handleChange} ref='gyazoImageData' style={{maxWidth: '100%'}} type='file'/>
                 <span className='file-custom'/>
               </label>
               {((imageUri) => imageUri && (
@@ -89,8 +89,9 @@ class GyazoUploadFormComponent extends React.Component {
 GyazoUploadFormComponent = connectToStores(GyazoUploadFormComponent, [UploadImageStore], (context) => {
   let uploadImageStore = context.getStore(UploadImageStore);
   return {
-    readyState: uploadImageStore.readyState,
-    imageUri: uploadImageStore.imageUri
+    imageFile: uploadImageStore.getCurrentImageFile(),
+    imageUri: uploadImageStore.getCurrentImageUri(),
+    readyState: uploadImageStore.getCurrentReadyState()
   };
 });
 export default GyazoUploadFormComponent;
