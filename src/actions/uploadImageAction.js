@@ -17,6 +17,11 @@ async function uploadImageAction(context, { uri, gyazoId, imageFile, form }) {
     context.dispatch('HANDLE_READY_STATE_CHANGE', {
       readyState: 'loading'
     });
+    if (response.status !== 200) {
+      let error = new Error(response.statusText);
+      error.statusCode = response.status;
+      throw error;
+    }
     imageUri = await response.text();
     await context.executeAction(saveUploadedImageAction, {
       fileName: imageFile.name,
