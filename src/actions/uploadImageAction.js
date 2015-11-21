@@ -1,5 +1,13 @@
 import saveUploadedImageAction from './saveUploadedImageAction';
 
+function validateUri(uri) {
+  let inputField = document.createElement('input');
+  inputField.type = 'uri';
+  inputField.value = uri;
+  let validity = inputField.validity;
+  return validity.valid;
+}
+
 async function uploadImageAction(context, { uri, gyazoId, imageFile, form }) {
   let imageUri;
   let formData = new FormData();
@@ -17,7 +25,16 @@ async function uploadImageAction(context, { uri, gyazoId, imageFile, form }) {
     context.dispatch('HANDLE_READY_STATE_CHANGE', {
       readyState: 'loading'
     });
+    if (response.status !== 200) {
+      let error = new Error(response.statusText);
+      error.statusCode = response.status;
+      throw error;
+    }
     imageUri = await response.text();
+    if (!validateUri(imageUri)) {
+      let error = new Error('Invalid URI.');
+      throw error;
+    }
     await context.executeAction(saveUploadedImageAction, {
       fileName: imageFile.name,
       uri: imageUri,
