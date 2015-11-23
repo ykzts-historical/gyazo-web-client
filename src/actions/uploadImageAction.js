@@ -2,7 +2,7 @@ import saveUploadedImageAction from './saveUploadedImageAction';
 
 function validateUri(uri) {
   let inputField = document.createElement('input');
-  inputField.type = 'uri';
+  inputField.type = 'url';
   inputField.value = uri;
   let validity = inputField.validity;
   return validity.valid;
