@@ -13,9 +13,10 @@
   },
   "scripts": {
     "build": "gulp build",
+    "dev": "nodemon --exec babel-node ./bin/gyazo-web-client.js",
     "lint": "gulp lint",
     "postinstall": "npm run build",
-    "start": "nodemon --exec babel-node ./bin/gyazo-web-client.js",
+    "start": "./bin/gyazo-web-client",
     "watch": "gulp watch"
   },
   "dependencies": {
