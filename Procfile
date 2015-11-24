@@ -1,1 +1,1 @@
-web: ./bin/gyazo-web-client
+web: npm start
