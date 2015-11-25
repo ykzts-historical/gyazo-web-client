@@ -11,6 +11,9 @@
   "bugs": {
     "url": "https://github.com/ykzts/gyazo-web-client/issues"
   },
+  "engines": {
+    "node": ">=4.2.2"
+  },
   "scripts": {
     "build": "gulp build",
     "dev": "nodemon --exec babel-node ./bin/gyazo-web-client.js",
