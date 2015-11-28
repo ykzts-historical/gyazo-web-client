@@ -1,5 +1,5 @@
-let handleErrorAction = async (context, payload) => {
+async function handleErrorAction(context, payload) {
   context.dispatch('HANDLE_ERROR', payload);
-};
+}
 
 export default handleErrorAction;
