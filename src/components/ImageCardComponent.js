@@ -1,3 +1,4 @@
+import moment from 'moment';
 import React from 'react';
 
 class ImageCardComponent extends React.Component {
@@ -18,7 +19,7 @@ class ImageCardComponent extends React.Component {
           </div>
           <footer className='card-footer text-muted text-right'>
             <span className='uploaded-at'>
-              <time dateTime={this.props.uploadedAt}>{this.props.uploadedAt}</time>
+              <time dateTime={this.props.uploadedAt}>{moment(this.props.uploadedAt).fromNow()}</time>
             </span>
           </footer>
         </div>
