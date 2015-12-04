@@ -53,13 +53,12 @@ gulp.task('build:client', ['lint'], function() {
 });
 
 gulp.task('lint', function() {
-  return gulp.src(['./config/routes.js', './src/**/*.js'])
+  return gulp.src(['./src/**/*.js'])
     .pipe(eslint())
     .pipe(eslint.format())
     .pipe(eslint.failAfterError());
 });
 
 gulp.task('watch', ['build:client'], function() {
-  gulp.watch('./config/routes.js', ['build:client']);
   gulp.watch('./src/**/*.js', ['build:client']);
 });
