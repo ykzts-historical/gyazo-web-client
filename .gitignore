@@ -2,7 +2,5 @@
 /npm-debug.log
 
 /bin/gyazo-web-client
-/lib/*
-!/lib/.keep
 /public/*
 !/public/.keep
