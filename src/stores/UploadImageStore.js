@@ -30,6 +30,7 @@ class UploadImageStore extends BaseStore {
 
   setImageFile({ imageFile }) {
     this.imageFile = imageFile;
+    this.emitChange();
   }
 
   getCurrentImageFile() {

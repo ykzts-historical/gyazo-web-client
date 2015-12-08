@@ -36,7 +36,7 @@ async function uploadImageAction(context, { uri, gyazoId, imageFile }) {
       throw error;
     }
     await context.executeAction(saveUploadedImageAction, {
-      fileName: imageFile.name,
+      fileName: imageFile.name || '',
       uri: imageUri,
       uploadedAt: new Date()
     });
