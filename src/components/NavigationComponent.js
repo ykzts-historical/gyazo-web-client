@@ -3,6 +3,9 @@ import { connectToStores } from 'fluxible-addons-react';
 import { NavLink } from 'fluxible-router';
 import RouteStore from '../stores/RouteStore';
 
+@connectToStores([RouteStore], (context) => ({
+  currentRoute: context.getStore(RouteStore).getCurrentRoute()
+}))
 class NavigationComponent extends React.Component {
   static contentTypes = {
     getStore: React.PropTypes.func.isRequired
@@ -30,7 +33,4 @@ class NavigationComponent extends React.Component {
   }
 }
 
-NavigationComponent = connectToStores(NavigationComponent, [RouteStore], (context) => ({
-  currentRoute: context.getStore(RouteStore).getCurrentRoute()
-}));
 export default NavigationComponent;

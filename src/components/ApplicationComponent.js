@@ -6,8 +6,11 @@ import NavigationComponent from './NavigationComponent';
 import AlertComponent from './AlertComponent';
 import ErrorStore from '../stores/ErrorStore';
 
-//@handleHistory
-//@provideContext
+@handleHistory
+@provideContext
+@connectToStores([ErrorStore], (context) => ({
+  error: context.getStore(ErrorStore).getError()
+}))
 class ApplicationComponent extends React.Component {
   getHandler() {
     let Handler = this.props.currentRoute && this.props.currentRoute.get('handler');
@@ -30,9 +33,4 @@ class ApplicationComponent extends React.Component {
   }
 }
 
-ApplicationComponent = connectToStores(ApplicationComponent, [ErrorStore], (context) => ({
-  error: context.getStore(ErrorStore).getError()
-}));
-ApplicationComponent = handleHistory(ApplicationComponent);
-ApplicationComponent = provideContext(ApplicationComponent);
 export default ApplicationComponent;

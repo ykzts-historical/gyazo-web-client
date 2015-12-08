@@ -4,6 +4,9 @@ import ImageCardComponent from '../components/ImageCardComponent';
 import ImageStore from '../stores/ImageStore';
 import loadUploadedImagesAction from '../actions/loadUploadedImagesAction';
 
+@connectToStores([ImageStore], (context) => ({
+  images: context.getStore(ImageStore).getImages()
+}))
 class UploadedImagesComponent extends React.Component {
   static contextTypes = {
     getStore: React.PropTypes.func,
@@ -35,7 +38,4 @@ class UploadedImagesComponent extends React.Component {
   }
 }
 
-UploadedImagesComponent = connectToStores(UploadedImagesComponent, [ImageStore], (context) => ({
-  images: context.getStore(ImageStore).getImages()
-}));
 export default UploadedImagesComponent;

@@ -5,6 +5,9 @@ import GyazoServiceStore from '../stores/GyazoServiceStore';
 import loadGyazoServiceAction from '../actions/loadGyazoServiceAction';
 import RegisterGyazoServiceFormComponent from '../components/RegisterGyazoServiceFormComponent';
 
+@connectToStores([GyazoServiceStore], (context) => ({
+  gyazoServices: context.getStore(GyazoServiceStore).getGyazoServices()
+}))
 class SettingsHandler extends React.Component {
   static contextTypes = {
     getStore: React.PropTypes.func.isRequired,
@@ -36,7 +39,4 @@ class SettingsHandler extends React.Component {
   }
 }
 
-SettingsHandler = connectToStores(SettingsHandler, [GyazoServiceStore], (context) => ({
-  gyazoServices: context.getStore(GyazoServiceStore).getGyazoServices()
-}));
 export default SettingsHandler;

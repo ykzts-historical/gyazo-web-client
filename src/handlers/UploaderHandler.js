@@ -6,6 +6,9 @@ import loadGyazoServiceAction from '../actions/loadGyazoServiceAction';
 import GyazoUploadFormComponent from '../components/GyazoUploadFormComponent';
 import UploadedImagesComponent from '../components/UploadedImagesComponent';
 
+@connectToStores([GyazoServiceStore], (context) => ({
+  gyazoServices: context.getStore(GyazoServiceStore).getGyazoServices()
+}))
 class UploaderHandler extends React.Component {
   static contextTypes = {
     getStore: React.PropTypes.func.isRequired,
@@ -30,7 +33,4 @@ class UploaderHandler extends React.Component {
   }
 }
 
-UploaderHandler = connectToStores(UploaderHandler, [GyazoServiceStore], (context) => ({
-  gyazoServices: context.getStore(GyazoServiceStore).getGyazoServices()
-}));
 export default UploaderHandler;

@@ -6,6 +6,14 @@ import ImageStore from '../stores/ImageStore';
 import selectUnsentImageFile from '../actions/selectUnsentImageFile';
 import uploadImageAction from '../actions/uploadImageAction';
 
+@connectToStores([UploadImageStore], (context) => {
+  let uploadImageStore = context.getStore(UploadImageStore);
+  return {
+    imageUri: uploadImageStore.getCurrentImageUri(),
+    imageFile: uploadImageStore.getCurrentImageFile(),
+    readyState: uploadImageStore.getCurrentReadyState()
+  };
+})
 class GyazoUploadFormComponent extends React.Component {
   static contextTypes = {
     getStore: React.PropTypes.func.isRequired,
@@ -86,12 +94,4 @@ class GyazoUploadFormComponent extends React.Component {
   }
 }
 
-GyazoUploadFormComponent = connectToStores(GyazoUploadFormComponent, [UploadImageStore], (context) => {
-  let uploadImageStore = context.getStore(UploadImageStore);
-  return {
-    imageFile: uploadImageStore.getCurrentImageFile(),
-    imageUri: uploadImageStore.getCurrentImageUri(),
-    readyState: uploadImageStore.getCurrentReadyState()
-  };
-});
 export default GyazoUploadFormComponent;
