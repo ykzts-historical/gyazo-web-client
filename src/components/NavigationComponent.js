@@ -21,6 +21,7 @@ class NavigationComponent extends React.Component {
             <li className='nav-item'>
               <NavLink className='nav-link' routeName='settings'>
                 <i className='fa fa-cog fa-lg'/>
+                <span className='hidden-xs-down'>&nbsp;Settings</span>
               </NavLink>
             </li>
           </ul>
