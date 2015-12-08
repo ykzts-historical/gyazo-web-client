@@ -42,7 +42,7 @@ class GyazoUploadFormComponent extends React.Component {
   handleSubmit(event) {
     event.preventDefault();
     let imageFile = this.props.imageFile;
-    if (!(imageFile instanceof File)) {
+    if (!(imageFile instanceof File || imageFile instanceof Blob)) {
       return false;
     }
     this.context.executeAction(uploadImageAction, {
@@ -75,7 +75,7 @@ class GyazoUploadFormComponent extends React.Component {
             <img className='card-img-top img-responsive' ref='image' src={this.props.imageUri || ''} style={{display: this.props.imageUri ? 'inline-block' : 'none'}}/>
             <div className='card-block'>
               <label className='file' htmlFor='gyazo-image' style={{display: this.props.imageUri ? 'none' : 'inline-block', maxWidth: '100%'}}>
-                <input accept='image/png' className='file' id='gyazo-image' name='imagedata' onChange={::this.handleChange} ref='gyazoImageData' style={{maxWidth: '100%'}} type='file'/>
+                <input accept='image/*' className='file' id='gyazo-image' name='imagedata' onChange={::this.handleChange} ref='gyazoImageData' style={{maxWidth: '100%'}} type='file'/>
                 <span className='file-custom'/>
               </label>
               {((imageUri) => imageUri && (
