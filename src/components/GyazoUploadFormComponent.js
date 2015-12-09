@@ -64,7 +64,8 @@ class GyazoUploadFormComponent extends React.Component {
   }
 
   canSubmit() {
-    return ['unsent', 'done'].includes(this.props.readyState);
+    let imageFile = this.props.imageFile;
+    return ['unsent', 'done'].includes(this.props.readyState) && imageFile && imageFile.type === 'image/png';
   }
 
   render() {
