@@ -1,13 +1,16 @@
+import decodeBase64 from './decodeBase64';
+
 function convertImageFormatToPng(imageFile) {
   let imageUri = URL.createObjectURL(imageFile);
   let imageElement = document.createElement('img');
   let canvasElement = document.createElement('canvas');
   let canvasContext = canvasElement.getContext('2d');
   return new Promise((resolve, reject) => {
-    imageElement.addEventListener('load', () => {
-      canvasElement.width = imageElement.width;
-      canvasElement.height = imageElement.height;
-      canvasContext.drawImage(imageElement, 0, 0);
+    imageElement.addEventListener('load', function() {
+      URL.revokeObjectURL(this.src);
+      canvasElement.width = this.width;
+      canvasElement.height = this.height;
+      canvasContext.drawImage(this, 0, 0);
       try {
         let dataUri = canvasElement.toDataURL('image/png');
         let blob = dataUriToBlob(dataUri);
@@ -31,17 +34,11 @@ function dataUriToBlob(uri) {
   let [ mediaType, data ] = uriWithoutProtocol.split(',', 2);
   let [ type, ...parameters ] = mediaType.split(';');
   let isEncodedBase64 = parameters.includes('base64');
-  return new Blob([isEncodedBase64 ? decodeBase64(data) : data], { type });
-}
-
-function decodeBase64(data) {
-  let bytes = atob(data);
-  let length = bytes.length;
-  let u8a = new Uint8Array(length);
-  for (let i = 0; i < length; i++) {
-    u8a[i] = bytes.charCodeAt(i);
-  }
-  return u8a;
+  /* eslint no-console: 0 */
+  console.time('decodeBase64');
+  data = isEncodedBase64 ? decodeBase64(data) : data;
+  console.timeEnd('decodeBase64');
+  return new Blob([data], { type });
 }
 
 export default convertImageFormatToPng;
