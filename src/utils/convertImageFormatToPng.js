@@ -34,11 +34,7 @@ function dataUriToBlob(uri) {
   let [ mediaType, data ] = uriWithoutProtocol.split(',', 2);
   let [ type, ...parameters ] = mediaType.split(';');
   let isEncodedBase64 = parameters.includes('base64');
-  /* eslint no-console: 0 */
-  console.time('decodeBase64');
-  data = isEncodedBase64 ? decodeBase64(data) : data;
-  console.timeEnd('decodeBase64');
-  return new Blob([data], { type });
+  return new Blob([isEncodedBase64 ? decodeBase64(data) : data], { type });
 }
 
 export default convertImageFormatToPng;
