@@ -1,4 +1,4 @@
-import decodeBase64 from './decodeBase64';
+import base64 from 'binary-base64';
 
 function convertImageFormatToPng(imageFile) {
   let imageUri = URL.createObjectURL(imageFile);
@@ -34,7 +34,7 @@ function dataUriToBlob(uri) {
   let [ mediaType, data ] = uriWithoutProtocol.split(',', 2);
   let [ type, ...parameters ] = mediaType.split(';');
   let isEncodedBase64 = parameters.includes('base64');
-  return new Blob([isEncodedBase64 ? decodeBase64(data) : data], { type });
+  return new Blob([isEncodedBase64 ? base64.decode(data) : data], { type });
 }
 
 export default convertImageFormatToPng;
