@@ -7,10 +7,18 @@ class ImageCardComponent extends React.Component {
     uploadedAt: React.PropTypes.string.isRequired
   };
 
+  handleClick(event) {
+    event.preventDefault();
+    return false;
+  }
+
   render() {
     return (
       <div className='ImageCardComponent'>
         <div className='card'>
+          <button aria-label='close' className='close' onClick={::this.handleClick} style={{ position: 'absolute', right: '-17px', top: '-12px' }} type='button'>
+            <span aria-hidden='true'>&times;</span>
+          </button>
           <a href={this.props.uri}>
             <img className='card-image-top img-responsive' src={this.props.uri}/>
           </a>
